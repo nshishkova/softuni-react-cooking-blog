@@ -1,0 +1,3 @@
+/* Shared navigation refinements */
+.primary-nav .nav-link { text-decoration: none; }
+.primary-nav .nav-link:focus-visible { outline: 2px solid var(--green, #477a55); outline-offset: 4px; }
