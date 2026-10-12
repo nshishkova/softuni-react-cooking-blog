@@ -16,10 +16,10 @@ export default function Home() {
             dishes you love and share something delicious with the community.
           </p>
           <div className="hero-actions">
-            <a className="button button-primary" href="catalog.html">
+            <a className="button button-primary" href="/recipes">
               Explore recipes <span aria-hidden="true">→</span>
             </a>
-            <a className="text-link" href="create.html">
+            <a className="text-link" href="/recipes/create">
               Have a recipe to share? <span aria-hidden="true">↗</span>
             </a>
           </div>
