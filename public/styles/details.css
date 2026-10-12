@@ -1,10 +1,47 @@
 /* Recipe detail page */
-.recipe-detail { padding: 2.5rem 0 4rem; }
-.detail-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2.5rem; align-items: center; }
-.detail-hero img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 1.25rem; }
-.detail-meta { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; color: #627064; }
-.detail-columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 2.5rem; margin-top: 3rem; }
-.detail-panel { background: #f5f6ef; border-radius: 1rem; padding: 1.5rem; }
-.detail-panel li { margin: .65rem 0; }
-.comment-card { border-bottom: 1px solid #e3e6dc; padding: 1rem 0; }
-@media (max-width: 720px) { .detail-hero,.detail-columns { grid-template-columns: 1fr; } }
+.recipe-detail {
+  padding: 2.5rem 0 4rem;
+}
+.detail-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: center;
+}
+.detail-hero img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: 1.25rem;
+}
+.detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+  color: #627064;
+}
+.detail-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  gap: 2.5rem;
+  margin-top: 3rem;
+}
+.detail-panel {
+  background: #f5f6ef;
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+.detail-panel li {
+  margin: 0.65rem 0;
+}
+.comment-card {
+  border-bottom: 1px solid #e3e6dc;
+  padding: 1rem 0;
+}
+@media (max-width: 720px) {
+  .detail-hero,
+  .detail-columns {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,46 +1,78 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import request from "../../utils/request";
 
 export default function RecipeDetails() {
-    const {recipeId} = useParams();
-    const [recipe, setRecipe] = useState({});
+  const { recipeId } = useParams();
+  const [recipe, setRecipe] = useState({});
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        request(`/recipes?id=eq.${recipeId}`)
-            .then(result => {
-                setRecipe(result[0])
-    }).catch(error => alert(error));
-    }, [recipeId]);
+  useEffect(() => {
+    request(`/recipes?id=eq.${recipeId}`)
+      .then((result) => {
+        setRecipe(result[0]);
+      })
+      .catch((error) => alert(error));
+  }, [recipeId]);
 
-    return (
-        
+  const deleteRecipeClickHandler = async (e) => {
+    e.preventDefault();
 
+    const confirmed = confirm(`Are you sure you want to delete ${recipe.title} recipe?`);
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+      await request(`/recipes?id=eq.${recipeId}`, 'DELETE');
+      navigate('/recipes');
+    } catch (error) {
+      alert(error);
+    }
+    
+  }
+
+  return (
     <main id="main">
       <section className="container recipe-detail">
-        <a className="back-link" href="/recipes">← Back to all recipes</a>
+        <a className="back-link" href="/recipes">
+          ← Back to all recipes
+        </a>
         <div className="detail-hero">
           <div>
             <span className="eyebrow">A community favorite · Dinner</span>
             <h1>{recipe.title}</h1>
-            <p className="hero-description">
-              {recipe.description}
-            </p>
+            <p className="hero-description">{recipe.description}</p>
             <div className="detail-meta">
-              <span>◷ {recipe.prepTime} minutes</span><span>♧ Easy</span
-              ><span>★ 4.9 (28 reviews)</span>
+              <span>◷ {recipe.prepTime} minutes</span>
+              <span>♧ Easy</span>
+              <span>★ 4.9 (28 reviews)</span>
             </div>
-            <p>Shared by <strong>Emma Wilson</strong></p>
+            <p>
+              Shared by <strong>Emma Wilson</strong>
+            </p>
             <div className="hero-actions">
-              <a className="button button-primary" href="login.html"
-                >♡ Save recipe</a
-              ><a className="button button-outline" href="edit.html">Edit recipe</a>
+              <a href="/login" className="button button-primary">
+                ♡ Save recipe
+              </a>
+
+              {/* You can add the owner check later */}
+              <>
+                <a
+                  href={`/recipes/${recipe.id}/edit`}
+                  className="button button-outline"
+                >
+                  ✏️ Edit recipe
+                </a>
+
+                <a href={`/recipes/${recipe.id}/delete`} type="button" className="button button-outline" onClick={deleteRecipeClickHandler}>
+                  🗑️ Delete recipe
+                </a>
+              </>
             </div>
           </div>
-          <img
-            src={recipe.imageUrl}
-            alt={recipe.title}
-          />
+          <img src={recipe.imageUrl} alt={recipe.title} />
         </div>
         <div className="detail-columns">
           <section className="detail-panel">
@@ -98,21 +130,20 @@ export default function RecipeDetails() {
             </p>
           </div>
           <form className="comment-form">
-            <label htmlFor="comment">Have a tip or question?</label
-            ><textarea
+            <label htmlFor="comment">Have a tip or question?</label>
+            <textarea
               id="comment"
               rows="3"
               placeholder="Share your thoughts..."
             ></textarea>
             <p>
-              <a className="button button-primary" href="login.html"
-                >Log in to comment</a
-              >
+              <a className="button button-primary" href="login.html">
+                Log in to comment
+              </a>
             </p>
           </form>
         </section>
       </section>
     </main>
-
-    )
+  );
 }
