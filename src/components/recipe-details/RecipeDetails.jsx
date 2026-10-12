@@ -1,19 +1,33 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import request from "../../utils/request";
+
 export default function RecipeDetails() {
+    const {recipeId} = useParams();
+    const [recipe, setRecipe] = useState({});
+
+    useEffect(() => {
+        request(`/recipes?id=eq.${recipeId}`)
+            .then(result => {
+                setRecipe(result[0])
+    }).catch(error => alert(error));
+    }, [recipeId]);
+
     return (
+        
 
     <main id="main">
       <section className="container recipe-detail">
-        <a className="back-link" href="catalog.html">← Back to all recipes</a>
+        <a className="back-link" href="/recipes">← Back to all recipes</a>
         <div className="detail-hero">
           <div>
             <span className="eyebrow">A community favorite · Dinner</span>
-            <h1>Lemon ricotta <em>pasta.</em></h1>
+            <h1>{recipe.title}</h1>
             <p className="hero-description">
-              Bright lemon, creamy ricotta, and fresh herbs come together in
-              this comforting weeknight favorite.
+              {recipe.description}
             </p>
             <div className="detail-meta">
-              <span>◷ 20 minutes</span><span>♧ Easy</span
+              <span>◷ {recipe.prepTime} minutes</span><span>♧ Easy</span
               ><span>★ 4.9 (28 reviews)</span>
             </div>
             <p>Shared by <strong>Emma Wilson</strong></p>
@@ -24,8 +38,8 @@ export default function RecipeDetails() {
             </div>
           </div>
           <img
-            src="https://images.unsplash.com/photo-1671523557969-14e564017d09?auto=format&fit=crop&w=1400&q=85"
-            alt="Fresh pasta with tomatoes, basil and parmesan"
+            src={recipe.imageUrl}
+            alt={recipe.title}
           />
         </div>
         <div className="detail-columns">
