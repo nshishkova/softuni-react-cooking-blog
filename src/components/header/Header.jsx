@@ -38,10 +38,10 @@ export default function Header() {
           </Link>
         </nav>
         <div className="header-actions">
-          <Link to="login.html" className="button button-outline button-small" >
+          <Link to="/login" className="button button-outline button-small" >
             Log in
           </Link>
-          <Link to="create.html" className="button button-primary button-small" >
+          <Link to="/recipes/create" className="button button-primary button-small" >
             Share Link recipe <span aria-hidden="true">↗</span>
           </Link>
         </div>
