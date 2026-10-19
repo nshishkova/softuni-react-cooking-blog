@@ -1,10 +1,33 @@
 
-const url = "https://wdbphrvyoroyjmpwkelo.supabase.co/rest/v1/";
+const restUrl = "https://wdbphrvyoroyjmpwkelo.supabase.co/rest/v1";
+const authUrl = "https://wdbphrvyoroyjmpwkelo.supabase.co/auth/v1";
+const storageUrl = "https://wdbphrvyoroyjmpwkelo.supabase.co/storage/v1/object/images";
 
-export default async function request(path = "/", method = "GET", data = null, opts = {}) {
+export async function uploadFile(fileName, file) {
     const options = {
         headers: {
-            apiKey: import.meta.env.VITE_API_KEY
+            apiKey: import.meta.env.VITE_API_KEY,
+            'Content-Type': file.type || 'application/octet-stream'
+        }
+    };
+    const response = await fetch(`${storageUrl}/${fileName}`, {
+        method: "POST",
+        body: file,
+        ...options,
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return `https://wdbphrvyoroyjmpwkelo.supabase.co/storage/v1/object/images/${fileName}`;
+
+}
+
+async function baseRequest(url, path = "/", method = "GET", data = null, opts = {}) {
+        const options = {
+        headers: {
+            apiKey: import.meta.env.VITE_API_KEY,
+            Prefer: "return=representation"
         },
         ...opts
     };
@@ -30,3 +53,13 @@ export default async function request(path = "/", method = "GET", data = null, o
 
     return response.json();
 }
+
+export default async function request(path = "/", method = "GET", data = null, opts = {}) {
+    return baseRequest(restUrl, path, method, data, opts);
+}
+//export default baseRequest.bind(null, restUrl);
+
+export const authRequest = async (path = "/", method = "GET", data = null, opts = {}) => {
+    return baseRequest(authUrl, path, method, data, opts);
+};
+//export const authRequest = baseRequest.bind(null, authUrl);

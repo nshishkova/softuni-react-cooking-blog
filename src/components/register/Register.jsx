@@ -1,4 +1,31 @@
-export default function Register() {
+import { useNavigate } from "react-router";
+
+export default function Register({
+    onRegister,
+}) {
+
+    const navigate = useNavigate();
+
+    const registerAction = (formData) => {
+        const email = formData.get("email");
+        const password = formData.get("password");
+        const confirmPassword = formData.get("confirm-password");
+    
+        if (password !== confirmPassword) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        if (!email || !password || !confirmPassword) {
+            alert("All fields are required");
+            return;
+        }
+
+        onRegister({ email, password });
+
+        navigate("/");
+    }
+
     return (
 
     <main className="container form-page" id="main">
@@ -10,7 +37,7 @@ export default function Register() {
                         src="https://images.unsplash.com/photo-1753791320863-bda47c67cd00?auto=format&fit=crop&w=1000&q=85"
                         alt="Fresh tomatoes, basil and burrata"/></div>
             </div>
-            <form className="design-form">
+            <form className="design-form" action={registerAction}>
                 <h2>Create account</h2>
                 <p className="form-muted">A little about you, then let's cook.</p><label htmlFor="name">Display
                     name</label><input id="name" type="text" placeholder="e.g. Jamie Green" required/><label

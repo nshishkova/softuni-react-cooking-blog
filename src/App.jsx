@@ -1,4 +1,6 @@
 import { Route, Routes } from "react-router"
+import { useState } from "react"
+import Logout from "./components/logout/Logout"
 import Login from "./components/login/Login"
 import RecipeEdit from "./components/recipe-edit/RecipeEdit"
 import Register from "./components/register/Register"
@@ -10,6 +12,20 @@ import Catalog from "./components/catalog/Catalog"
 import RecipeDetails from "./components/recipe-details/RecipeDetails"
 
 function App() {
+  const [auth, setAuth] = useState(null);
+
+  const register = async (userData) => {
+    try {
+      const result = await register(userData);
+      setAuth(result);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const logoutAction = () => {
+    setAuth(null);
+  };
 
   return (
     <>
@@ -17,11 +33,12 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/recipes" element={<Catalog />} />
-      <Route path="/recipes/:recipeId" element={<RecipeDetails />} />
+      <Route path="/recipes/:recipeId" element={<RecipeDetails user={auth} />} />
       <Route path="/recipes/create" element={<RecipeCreate />} />
       <Route path="/recipes/:recipeId/edit" element={<RecipeEdit />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login onLogin={register} />} />
+      <Route path="/register" element={<Register onRegister={register} />} />
+      <Route path="/logout" element={<Logout onLogout={logoutAction} />} />
     </Routes>
     <Footer />
     </>
