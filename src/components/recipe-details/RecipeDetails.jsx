@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import request from "../../utils/request";
 
-export default function RecipeDetails() {
+export default function RecipeDetails({ user }) {
   const { recipeId } = useParams();
   const [recipe, setRecipe] = useState({});
   const navigate = useNavigate();
+  const [refresh, setRefresh] = useState(false);
+
 
   useEffect(() => {
     request(`/recipes?id=eq.${recipeId}`)
