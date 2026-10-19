@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router"
+import { authApi } from "./components/api"
 import { useState } from "react"
 import Logout from "./components/logout/Logout"
 import Login from "./components/login/Login"
@@ -16,7 +17,7 @@ function App() {
 
   const register = async (userData) => {
     try {
-      const result = await register(userData);
+      const result = await authApi.register(userData);
       setAuth(result);
     } catch (error) {
       alert(error.message);
