@@ -1,4 +1,23 @@
-export default function Login() {
+import { useNavigate } from "react-router";
+
+export default function Login({
+    onLogin,
+}) {
+
+    const navigate = useNavigate();
+
+    const submitAction = (formData) => {
+        const { email, password } = Object.fromEntries(formData);
+
+        if (!email || !password) {
+            alert("Email and password are required");
+            return;
+        }
+
+        onLogin({ email });
+        navigate("/");
+    };
+
     return (
 
     <main className="container form-page" id="main">
@@ -10,7 +29,7 @@ export default function Login() {
                         src="https://images.unsplash.com/photo-1671523557969-14e564017d09?auto=format&fit=crop&w=1000&q=85"
                         alt="Fresh pasta with herbs"/></div>
             </div>
-            <form className="design-form">
+            <form className="design-form" action={submitAction}>
                 <h2>Log in</h2>
                 <p className="form-muted">Pick up where your kitchen left off.</p><label htmlFor="email">Email
                     address</label><input id="email" type="email" placeholder="you@example.com" required/><label
@@ -18,7 +37,7 @@ export default function Login() {
                     placeholder="Enter your password" required/>
                 <div className="form-inline"><label className="check-label"><input type="checkbox" /> Remember me</label><a
                         href="#forgot">Forgot password?</a></div><button className="button button-primary form-submit"
-                    type="button">Log in</button>
+                    type="submit">Log in</button>
                 <p className="form-switch">New to RecipeHub? <a href="/register">Create an account</a></p>
                 <p className="demo-note">Design preview only — this form does not authenticate.</p>
             </form>
