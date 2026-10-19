@@ -62,12 +62,9 @@ export default function Header({ isAuthenticated }) {
               >
                 My Profile
               </Link>
-              <button
-                type="button"
-                className="button button-outline button-small"
-              >
+              <Link to="/logout" className="button button-outline button-small">
                 Log out
-              </button>
+              </Link>
             </>
           ) : (
             // Header for guests who are not logged in
