@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { request } from "../../utils/request";
+import request from "../../utils/request";
+import { useNavigate } from "react-router";
 
 const initialValues = {
   title: "",
@@ -13,6 +14,7 @@ const initialValues = {
 
 export default function RecipeCreate() {
   const [values, setValues] = useState(initialValues);
+  const navigate = useNavigate();
 
   const changeHandler = (e) => {
     setValues(state => ({
@@ -21,17 +23,23 @@ export default function RecipeCreate() {
     }));
   };
 
-  const submitAction = () => {
-    request("/recipes", "POST", {
-      ...values,
-      prepTime: Number(values.prepTime),
-    })
+  const submitAction = async () => {
+    try{
+      await request("/recipes", "POST", {
+        ...values,
+        prepTime: Number(values.prepTime),
+      });
+
+      navigate("/recipes");
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
     <main className="container form-page" id="main">
       <section className="editor-heading">
-        <a className="back-link" href="catalog.html">
+        <a className="back-link" href="/recipes">
           ← Back to recipes
         </a>
         <span className="eyebrow">Your kitchen, your story</span>
@@ -54,10 +62,9 @@ export default function RecipeCreate() {
             id="recipe-title"
             name="title"
             type="text"
-            value=""
+            value={values.title}
             placeholder="e.g. Lemon ricotta pasta"
             required
-            value={values.title}
             onChange={changeHandler}
           />
           <label htmlFor="description">Short description</label>
@@ -88,9 +95,8 @@ export default function RecipeCreate() {
                 name="prepTime"
                 type="number"
                 min="1"
-                value=""
-                placeholder="20"
                 value={values.prepTime}
+                placeholder="20"
                 onChange={changeHandler}
               />
             </div>
@@ -100,7 +106,6 @@ export default function RecipeCreate() {
             id="image"
             name="imageUrl"
             type="url"
-            value=""
             placeholder="https://example.com/your-dish.jpg"
             value={values.imageUrl}
             onChange={changeHandler}
