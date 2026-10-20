@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import request from "../../utils/request";
 import RecipeCard from "../recipe-card/RecipeCard";
 import { Link } from "react-router";
+import {recipeApi} from "../api/recipes-api";
 
 export default function Catalog() {
     const [recipes, setRecipes] = useState([]);
 
     useEffect(() => {
-        request("/recipes?order=created_at.desc")
-        .then(setRecipes)
-        .catch(err => alert(err));
+       recipeApi.getAll()
+       .then(setRecipes)
+       .catch(err => alert(err));
     }, []);
 
   return (
