@@ -12,6 +12,7 @@ import Header from "./components/header/Header";
 import Home from "./components/home/Home";
 import Catalog from "./components/catalog/Catalog";
 import RecipeDetails from "./components/recipe-details/RecipeDetails";
+import AuthContext from "./components/contexts/auth-context";
 
 function App() {
   const [auth, setAuth] = useState(null);
@@ -44,8 +45,17 @@ function App() {
     }
   };
 
+  const contextValue = { 
+    accessToken: auth?.access_token,
+    user: auth?.user,
+    isAuthenticated: !!auth,
+    register,
+    login,
+    //logout: logoutAction
+  };
+
   return (
-    <>
+    <AuthContext.Provider value={contextValue}>
       <Header isAuthenticated={!!auth} />
 
       <Routes>
@@ -64,7 +74,8 @@ function App() {
         <Route path="/logout" element={<Logout onLogout={logoutAction} />} />
       </Routes>
       <Footer />
-    </>
+
+    </AuthContext.Provider>
   );
 }
 

@@ -1,16 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import AuthContext from "../contexts/auth-context";
 import RecipeCard from "../recipe-card/RecipeCard";
 import { Link } from "react-router";
 import {recipeApi} from "../api/recipes-api";
 
 export default function Catalog() {
+    const {accessToken} = useContext(AuthContext);
     const [recipes, setRecipes] = useState([]);
 
     useEffect(() => {
        recipeApi.getAll()
        .then(setRecipes)
        .catch(err => alert(err));
-    }, []);
+    }, [accessToken]);
 
   return (
       <section className="container catalog-intro">
