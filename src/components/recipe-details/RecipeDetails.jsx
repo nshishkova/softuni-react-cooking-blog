@@ -1,14 +1,14 @@
-import { useParams, useNavigate } from "react-router";
-import { Link } from "react-router";
+import ListComment from '../list-comment/ListComment';
+import { Link, useParams, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import CreateComment from "../create-comment/CreateComment";
+import CreateComment from "../create-comment/CreateComment.jsx";
 import request from "../../utils/request";
 
 export default function RecipeDetails({user}) {
   const { recipeId } = useParams();
   const [recipe, setRecipe] = useState({});
   const navigate = useNavigate();
-  //const [refresh, setRefresh] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
 
   useEffect(() => {
@@ -120,21 +120,9 @@ export default function RecipeDetails({user}) {
         <section className="comments-section">
           <span className="eyebrow">Around the table</span>
           <h2>Comments & tips</h2>
-          <div className="comment-card">
-            <strong>Amelia R.</strong>
-            <p>
-              Added a little chili flakes and it was lovely. Perfect weeknight
-              dinner!
-            </p>
-          </div>
-          <div className="comment-card">
-            <strong>Jordan K.</strong>
-            <p>
-              So simple and fresh. I used whole-wheat pasta and it worked great.
-            </p>
-          </div>
+          <ListComment recipeId={recipeId} refresh={refresh} /> 
           {user ? (
-            <CreateComment user={user} recipeId={recipeId} />
+            <CreateComment user={user} recipeId={recipeId} onCreate={() => setRefresh(state => !state)} />
           ) : (
             <p>
                 <a className="button button-primary" href="/login">
