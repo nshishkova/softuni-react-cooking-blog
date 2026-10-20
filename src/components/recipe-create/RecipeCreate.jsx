@@ -140,13 +140,10 @@ export default function RecipeCreate() {
             <a className="button button-outline" href="index.html">
               Cancel
             </a>
-            <button className="button button-primary" type="button">
+            <button className="button button-primary" type="submit">
               Publish recipe ↗
             </button>
           </div>
-          <p className="demo-note">
-            Design preview only — publishing is not connected to a backend.
-          </p>
         </form>
         <aside className="editor-aside">
           <div className="aside-tip">

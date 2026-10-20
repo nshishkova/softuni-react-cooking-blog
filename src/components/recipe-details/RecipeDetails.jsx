@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
+import { Link } from "react-router";
 import request from "../../utils/request";
 
-export default function RecipeDetails({ user }) {
+export default function RecipeDetails() {
   const { recipeId } = useParams();
   const [recipe, setRecipe] = useState({});
   const navigate = useNavigate();
@@ -61,14 +62,14 @@ export default function RecipeDetails({ user }) {
 
               {/* You can add the owner check later */}
               <>
-                <a
-                  href={`/recipes/${recipe.id}/edit`}
+                <Link
+                  to={`/recipes/${recipeId}/edit`}
                   className="button button-outline"
                 >
                   ✏️ Edit recipe
-                </a>
+                </Link>
 
-                <a href={`/recipes/${recipe.id}/delete`} type="button" className="button button-outline" onClick={deleteRecipeClickHandler}>
+                <a href={`/recipes/${recipeId}/delete`} type="button" className="button button-outline" onClick={deleteRecipeClickHandler}>
                   🗑️ Delete recipe
                 </a>
               </>

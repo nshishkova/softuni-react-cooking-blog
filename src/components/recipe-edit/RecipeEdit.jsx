@@ -1,4 +1,33 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import request from "../../utils/request";
+
+const initialValues = {
+  title: "",
+  description: "",
+  category: "",
+  prepTime: "",
+  imageUrl: "",
+  ingredients: "",
+  instructions: "",
+};
+
 export default function RecipeEdit() {
+  const {recipeId} = useParams();
+  const [recipe, setRecipe] = useState(initialValues);
+
+  const changeHandler = (e) => {
+    setRecipe(state => ({
+      ...state,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  useEffect(() => {
+    request(`/recipes?id=eq.${recipeId}`)
+      .then(data => setRecipe(data[0]))
+  }, [recipeId]);
+
   return (
     <main className="container form-page" id="main">
       <section className="editor-heading">
@@ -19,24 +48,27 @@ export default function RecipeEdit() {
           <label htmlFor="recipe-title">Recipe title</label
           ><input
             id="recipe-title"
+            name="title"
             type="text"
-            value="Lemon ricotta pasta"
-            placeholder="e.g. Lemon ricotta pasta"
+            placeholder="e.g. Lemon ricotta pasta" 
+            value={recipe.title}
+            onChange={changeHandler}
             required
           /><label htmlFor="description">Short description</label
           ><textarea
             id="description"
+            name="description"
             rows="3"
             placeholder="What makes this recipe special?"
-          >
-Bright, creamy, and ready before you know it.</textarea
+            value={recipe.description}
+            onChange={changeHandler}
+          >{recipe.description}</textarea
           >
           <div className="form-two-col">
             <div>
               <label htmlFor="category">Category</label
-              ><select id="category">
+              ><select id="category" name="category" value={recipe.category} onChange={changeHandler}>
                 <option>Choose a category</option>
-                <option selected>Dinner</option>
                 <option>Breakfast</option>
                 <option>Lunch</option>
                 <option>Dinner</option>
@@ -49,7 +81,8 @@ Bright, creamy, and ready before you know it.</textarea
                 id="time"
                 type="number"
                 min="1"
-                value="20"
+                value={recipe.prepTime}
+                onChange={changeHandler}
                 placeholder="20"
               />
             </div>
@@ -57,8 +90,10 @@ Bright, creamy, and ready before you know it.</textarea
           <label htmlFor="image">Image URL</label
           ><input
             id="image"
+            name="imageUrl"
             type="url"
-            value="https://images.unsplash.com/photo-1671523557969-14e564017d09?auto=format&fit=crop&w=900&q=85"
+            value={recipe.imageUrl}
+            onChange={changeHandler}
             placeholder="https://example.com/your-dish.jpg"
           /><label htmlFor="ingredients"
             >Ingredients <span className="label-hint">One per line</span></label
@@ -77,6 +112,8 @@ Salt and black pepper</textarea
             id="instructions"
             rows="6"
             placeholder="1. Prepare your ingredients..."
+            value={recipe.instructions}
+            onChange={changeHandler}
           >
 1. Cook pasta in salted water until al dente.
 2. Mix ricotta with lemon zest and a splash of pasta water.

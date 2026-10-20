@@ -65,8 +65,8 @@
 //export const authRequest = baseRequest.bind(null, authUrl);
 
 
-const restUrl = "https://juiegzuqlaacubisfriq.supabase.co/rest/v1";
-const storageUrl = "https://juiegzuqlaacubisfriq.supabase.co/storage/v1/object/images";
+const restUrl = "https://wdbphrvyoroyjmpwkelo.supabase.co/rest/v1";
+const storageUrl = "https://wdbphrvyoroyjmpwkelo.supabase.co/storage/v1/object/images";
 
 export async function uploadFile(fileName, file) {
     const options = {

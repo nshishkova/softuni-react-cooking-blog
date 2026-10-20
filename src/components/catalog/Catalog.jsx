@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import request from "../../utils/request";
 import RecipeCard from "../recipe-card/RecipeCard";
+import { Link } from "react-router";
 
 export default function Catalog() {
     const [recipes, setRecipes] = useState([]);
@@ -40,8 +41,8 @@ export default function Catalog() {
         }
         </div>
         <div className="centered-action">
-          <a className="button button-primary" href="create.html"
-            >Share your recipe ↗</a
+          <Link className="button button-primary" to="/recipes/create"
+            >Share your recipe ↗</Link
           >
         </div>
       </section>
