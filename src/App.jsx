@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router";
-import { authApi } from "./components/api"
+import { authApi } from "./api"
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import Logout from "./components/logout/Logout";
@@ -12,7 +12,7 @@ import Header from "./components/header/Header";
 import Home from "./components/home/Home";
 import Catalog from "./components/catalog/Catalog";
 import RecipeDetails from "./components/recipe-details/RecipeDetails";
-import AuthContext from "./components/contexts/auth-context";
+import AuthContext from "./contexts/auth-context";
 
 function App() {
   const [auth, setAuth] = useState(null);
