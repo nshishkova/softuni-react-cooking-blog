@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { Link } from "react-router";
+import { useEffect, useState } from "react";
+import CreateComment from "../create-comment/CreateComment";
 import request from "../../utils/request";
 
-export default function RecipeDetails() {
+export default function RecipeDetails({user}) {
   const { recipeId } = useParams();
   const [recipe, setRecipe] = useState({});
   const navigate = useNavigate();
-  const [refresh, setRefresh] = useState(false);
+  //const [refresh, setRefresh] = useState(false);
 
 
   useEffect(() => {
@@ -132,19 +133,16 @@ export default function RecipeDetails() {
               So simple and fresh. I used whole-wheat pasta and it worked great.
             </p>
           </div>
-          <form className="comment-form">
-            <label htmlFor="comment">Have a tip or question?</label>
-            <textarea
-              id="comment"
-              rows="3"
-              placeholder="Share your thoughts..."
-            ></textarea>
+          {user ? (
+            <CreateComment user={user} recipeId={recipeId} />
+          ) : (
             <p>
-              <a className="button button-primary" href="login.html">
-                Log in to comment
-              </a>
+                <a className="button button-primary" href="/login">
+                    Log in to comment
+                </a>
             </p>
-          </form>
+          )
+          }
         </section>
       </section>
     </main>

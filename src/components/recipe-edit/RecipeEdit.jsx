@@ -13,7 +13,7 @@ const initialValues = {
 };
 
 export default function RecipeEdit() {
-  const {recipeId} = useParams();
+  const { recipeId } = useParams();
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState(initialValues);
 
@@ -57,7 +57,7 @@ export default function RecipeEdit() {
             id="recipe-title"
             name="title"
             type="text"
-            placeholder="e.g. Lemon ricotta pasta" 
+            placeholder="e.g. Lemon ricotta pasta"
             value={recipe.title}
             onChange={changeHandler}
             required
@@ -103,7 +103,7 @@ export default function RecipeEdit() {
             onChange={changeHandler}
             placeholder="https://example.com/your-dish.jpg"
           /><label htmlFor="ingredients"
-            >Ingredients <span className="label-hint">One per line</span></label
+          >Ingredients <span className="label-hint">One per line</span></label
           ><textarea
             id="ingredients"
             rows="5"
@@ -111,11 +111,11 @@ export default function RecipeEdit() {
             value={recipe.ingredients}
             onChange={changeHandler}
           >
-200 g pasta
-1 lemon, zested
-150 g ricotta
-Fresh basil
-Salt and black pepper</textarea
+            200 g pasta
+            1 lemon, zested
+            150 g ricotta
+            Fresh basil
+            Salt and black pepper</textarea
           ><label htmlFor="instructions">Instructions</label
           ><textarea
             id="instructions"
@@ -124,17 +124,17 @@ Salt and black pepper</textarea
             value={recipe.instructions}
             onChange={changeHandler}
           >
-1. Cook pasta in salted water until al dente.
-2. Mix ricotta with lemon zest and a splash of pasta water.
-3. Toss pasta through the sauce.
-4. Finish with basil and black pepper.</textarea
+            1. Cook pasta in salted water until al dente.
+            2. Mix ricotta with lemon zest and a splash of pasta water.
+            3. Toss pasta through the sauce.
+            4. Finish with basil and black pepper.</textarea
           ><label htmlFor="tips">Tips (optional)</label
           ><textarea
             id="tips"
             rows="3"
             placeholder="Any substitutions or serving tips?"
           >
-Save a little pasta water to make the sauce silky.</textarea
+            Save a little pasta water to make the sauce silky.</textarea
           >
           <div className="form-actions">
             <a className="button button-outline" href="index.html">Cancel</a
@@ -142,7 +142,6 @@ Save a little pasta water to make the sauce silky.</textarea
               Save changes ✓
             </button>
           </div>
-          <p className="demo-note">Design preview only — changes are not saved.</p>
         </form>
         <aside className="editor-aside">
           <div className="aside-tip">
