@@ -1,5 +1,5 @@
 import { useState } from "react";
-import request from "../../utils/request";
+import request, { uploadFile } from "../../utils/request";
 import { useNavigate } from "react-router";
 
 const initialValues = {
@@ -15,7 +15,7 @@ const initialValues = {
 export default function RecipeCreate() {
   const [values, setValues] = useState(initialValues);
   const [isFileUpload, setIsFileUpload] = useState(true);
-  const [previewUrl, setPreviewUrl] = useState(null); 
+  const [previewUrl, setPreviewUrl] = useState(null);
   const navigate = useNavigate();
 
   const changeHandler = (e) => {
@@ -25,11 +25,20 @@ export default function RecipeCreate() {
     }));
   };
 
-  const submitAction = async () => {
+  const submitAction = async (formData) => {
+    const file = formData.get("image");
+    let imageUrl = values.imageUrl;
+
+    if (file) {
+      const fileName = file.name;
+      imageUrl = await uploadFile(fileName, file);
+    }
+
     try {
       await request("/recipes", "POST", {
         ...values,
         prepTime: Number(values.prepTime),
+        imageUrl,
       });
 
       navigate("/recipes");
@@ -111,39 +120,39 @@ export default function RecipeCreate() {
             </div>
           </div>
           <div className="form-two-col">
-          <label htmlFor="toggleFileUpload">Upload image as file?</label>
-          <input
-            id="toggleFileUpload"
-            name="toggleFileUpload"
-            type="checkbox"
-            checked={isFileUpload}
-            onChange={() => setIsFileUpload(!isFileUpload)}
-          />
+            <label htmlFor="toggleFileUpload">Upload image as file?</label>
+            <input
+              id="toggleFileUpload"
+              name="toggleFileUpload"
+              type="checkbox"
+              checked={isFileUpload}
+              onChange={() => setIsFileUpload(!isFileUpload)}
+            />
 
-          {isFileUpload ? (
-            <>
-              <label htmlFor="fileUpload">Upload File</label>
-              <input
-                id="fileUpload"
-                name="image"
-                type="file"
-                onChange={fileChangeHandler}
-              />
-              <img src={previewUrl} alt="preview" />
-            </>
-          ) : (
-            <>
-              <label htmlFor="imageUrl">Image URL</label>
-              <input
-                id="imageUrl"
-                name="imageUrl"
-                type="text"
-                placeholder="https://example.com/your-dish.jpg"
-                value={values.imageUrl}
-                onChange={changeHandler}
-              />
-            </>
-          )}
+            {isFileUpload ? (
+              <>
+                <label htmlFor="fileUpload">Upload File</label>
+                <input
+                  id="fileUpload"
+                  name="image"
+                  type="file"
+                  onChange={fileChangeHandler}
+                />
+                <img src={previewUrl} alt="preview" />
+              </>
+            ) : (
+              <>
+                <label htmlFor="imageUrl">Image URL</label>
+                <input
+                  id="imageUrl"
+                  name="imageUrl"
+                  type="text"
+                  placeholder="https://example.com/your-dish.jpg"
+                  value={values.imageUrl}
+                  onChange={changeHandler}
+                />
+              </>
+            )}
           </div>
           <label htmlFor="ingredients">
             Ingredients <span className="label-hint">One per line</span>
