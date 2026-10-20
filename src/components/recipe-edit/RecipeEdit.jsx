@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import request from "../../utils/request";
 
 const initialValues = {
@@ -14,6 +14,7 @@ const initialValues = {
 
 export default function RecipeEdit() {
   const {recipeId} = useParams();
+  const navigate = useNavigate();
   const [recipe, setRecipe] = useState(initialValues);
 
   const changeHandler = (e) => {
@@ -28,6 +29,12 @@ export default function RecipeEdit() {
       .then(data => setRecipe(data[0]))
   }, [recipeId]);
 
+  const editAction = async (e) => {
+    await request(`/recipes?id=eq.${recipeId}`, 'PUT', recipe);
+
+    navigate(`/recipes/${recipeId}`);
+  };
+
   return (
     <main className="container form-page" id="main">
       <section className="editor-heading">
@@ -37,7 +44,7 @@ export default function RecipeEdit() {
         <p>Update the details, improve the instructions, or add a new tip.</p>
       </section>
       <section className="editor-layout">
-        <form className="design-form editor-form">
+        <form className="design-form editor-form" action={editAction}>
           <div className="form-section-title">
             <span>01</span>
             <div>
@@ -101,6 +108,8 @@ export default function RecipeEdit() {
             id="ingredients"
             rows="5"
             placeholder="200 g pasta&#10;1 lemon&#10;Fresh basil"
+            value={recipe.ingredients}
+            onChange={changeHandler}
           >
 200 g pasta
 1 lemon, zested
@@ -129,7 +138,7 @@ Save a little pasta water to make the sauce silky.</textarea
           >
           <div className="form-actions">
             <a className="button button-outline" href="index.html">Cancel</a
-            ><button className="button button-primary" type="button">
+            ><button className="button button-primary" type="submit">
               Save changes ✓
             </button>
           </div>
