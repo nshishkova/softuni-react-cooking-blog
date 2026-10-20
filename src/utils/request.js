@@ -1,6 +1,6 @@
 
 const restUrl = "https://wdbphrvyoroyjmpwkelo.supabase.co/rest/v1";
-// const authUrl = "https://wdbphrvyoroyjmpwkelo.supabase.co/auth/v1";
+const authUrl = "https://wdbphrvyoroyjmpwkelo.supabase.co/auth/v1";
 const storageUrl = "https://wdbphrvyoroyjmpwkelo.supabase.co/storage/v1/object/images";
 
 export async function uploadFile(fileName, file) {
@@ -60,7 +60,7 @@ export default async function request(path = "/", method = "GET", data = null, o
 }
 //export default baseRequest.bind(null, restUrl);
 
-// export const authRequest = async (path = "/", method = "GET", data = null, opts = {}) => {
-//     return baseRequest(authUrl, path, method, data, opts);
-// };
+export const authRequest = async (path = "/", method = "GET", data = null, opts = {}) => {
+    return baseRequest(authUrl, path, method, data, opts);
+};
 //export const authRequest = baseRequest.bind(null, authUrl);
