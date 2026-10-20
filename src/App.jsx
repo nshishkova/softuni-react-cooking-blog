@@ -28,14 +28,20 @@ function App() {
     }
   };
 
-  // const [user, setUser] = useState(null);
-
-  // const userAuthHandler = (userData) => {
-  //   setAuth(userData);
-  // };
-
   const logoutAction = () => {
     setAuth(null);
+  };
+
+  const login = async (userData) => {
+    try {
+      const result = await authApi.login(userData);
+
+      setAuth(result);
+
+      navigate("/");
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
@@ -51,7 +57,7 @@ function App() {
         />
         <Route path="/recipes/create" element={<RecipeCreate />} />
         <Route path="/recipes/:recipeId/edit" element={<RecipeEdit />} />
-        <Route path="/login" element={<Login onLogin={register} />} />
+        <Route path="/login" element={<Login onLogin={login} />} />
         <Route
           path="/register"
           element={<Register onRegister={register} />} />
