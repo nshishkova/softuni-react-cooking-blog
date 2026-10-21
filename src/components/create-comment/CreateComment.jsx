@@ -1,15 +1,16 @@
-import request from '../../utils/request';
+import { commentApi } from '../../api';
 
-export default function CreateComment({ user, recipeId, onCreate }) {
+export default function CreateComment({ user, recipeId, onCreate, accessToken }) {
 
     const addCommentAction = async (formData) => {
         const newComment = {
-            text: formData.get('comment'),
+            text: formData.get('text'),
             author: user?.email,
             recipe_id: recipeId,
+            user_id: user?.id
         }
         try {
-            await request('/comments', 'POST', newComment);
+            await commentApi.create(newComment, accessToken);
             onCreate();
         } catch (error) {
             alert(error);
@@ -18,10 +19,10 @@ export default function CreateComment({ user, recipeId, onCreate }) {
 
     return (
         <form className="comment-form" action={addCommentAction}>
-            <label htmlFor="comment">Add a comment</label>
+            <label htmlFor="text">Add a comment</label>
             <textarea
-                id="comment"
-                name="comment"
+                id="text"
+                name="text"
                 rows="3"
                 placeholder="Write your comment here..."
             ></textarea>
