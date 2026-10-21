@@ -13,6 +13,8 @@ export default function RecipeDetails() {
   const navigate = useNavigate();
   const [refresh, setRefresh] = useState(false);
 
+  const isOwner = user && user?.id === recipe?.user_id;
+
 
   useEffect(() => {
     request(`/recipes?id=eq.${recipeId}`)
@@ -64,7 +66,7 @@ export default function RecipeDetails() {
                 ♡ Save recipe
               </a>
 
-              {/* You can add the owner check later */}
+              {isOwner && (
               <>
                 <Link
                   to={`/recipes/${recipeId}/edit`}
@@ -76,7 +78,7 @@ export default function RecipeDetails() {
                 <a href={`/recipes/${recipeId}/delete`} type="button" className="button button-outline" onClick={deleteRecipeClickHandler}>
                   🗑️ Delete recipe
                 </a>
-              </>
+              </>)}
             </div>
           </div>
           <img src={recipe.imageUrl} alt={recipe.title} />
