@@ -1,6 +1,8 @@
-import { useState } from "react";
-import request, { uploadFile } from "../../utils/request";
+import { useState, useContext } from "react";
+import { uploadFile } from "../../utils/request";
+import AuthContext from "../../contexts/auth-context";
 import { useNavigate } from "react-router";
+import * as gameApi from "../../api/recipe-api";
 
 const initialValues = {
   title: "",
@@ -13,6 +15,7 @@ const initialValues = {
 };
 
 export default function RecipeCreate() {
+  const { accessToken } = useContext(AuthContext);
   const [values, setValues] = useState(initialValues);
   const [isFileUpload, setIsFileUpload] = useState(true);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -35,15 +38,13 @@ export default function RecipeCreate() {
     }
 
     try {
-      await request("/recipes", "POST", {
-        ...values,
-        prepTime: Number(values.prepTime),
-        imageUrl,
-      });
+      //await gameApi.create({values, imageUrl}, accessToken);
+      await gameApi.create(values, accessToken);
+
 
       navigate("/recipes");
     } catch (error) {
-      alert(error);
+      alert(error.message);
     }
   };
 
