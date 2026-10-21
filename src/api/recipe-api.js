@@ -24,6 +24,14 @@ export const remove = async (recipeId, accessToken) => {
     });
 }
 
+export const update = async (recipeId, data, accessToken) => {
+    return request(`/recipes?id=eq.${recipeId}`, 'PUT', data, {
+        headers: {
+            ...getAuthHeader(accessToken)
+        }
+    });
+}
+
 function getAuthHeader(accessToken) {
     return {
         ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {} )

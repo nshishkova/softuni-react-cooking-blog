@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router";
+import AuthContext from "../../contexts/auth-context";
 import request from "../../utils/request";
+import { recipeApi } from "../../api";
 
 const initialValues = {
   title: "",
@@ -16,6 +18,7 @@ export default function RecipeEdit() {
   const { recipeId } = useParams();
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState(initialValues);
+  const { accessToken } = useContext(AuthContext);
 
   const changeHandler = (e) => {
     setRecipe(state => ({
@@ -29,10 +32,14 @@ export default function RecipeEdit() {
       .then(data => setRecipe(data[0]))
   }, [recipeId]);
 
-  const editAction = async (e) => {
-    await request(`/recipes?id=eq.${recipeId}`, 'PUT', recipe);
+  const editAction = async () => {
+    try {
+      await recipeApi.update(recipeId, recipe, accessToken);
 
-    navigate(`/recipes/${recipeId}`);
+      navigate(`/recipes/${recipeId}`);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
