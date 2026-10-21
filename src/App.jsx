@@ -63,7 +63,7 @@ function App() {
         <Route path="/recipes" element={<Catalog />} />
         <Route
           path="/recipes/:recipeId"
-          element={<RecipeDetails user={auth?.user} />}
+          element={<RecipeDetails />}
         />
         <Route path="/recipes/create" element={<RecipeCreate />} />
         <Route path="/recipes/:recipeId/edit" element={<RecipeEdit />} />

@@ -1,10 +1,13 @@
 import ListComment from '../list-comment/ListComment';
 import { Link, useParams, useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import CreateComment from "../create-comment/CreateComment.jsx";
 import request from "../../utils/request";
+import { recipeApi } from "../../api";
+import AuthContext from "../../contexts/auth-context";
 
-export default function RecipeDetails({user}) {
+export default function RecipeDetails() {
+  const { user, accessToken } = useContext(AuthContext);
   const { recipeId } = useParams();
   const [recipe, setRecipe] = useState({});
   const navigate = useNavigate();
@@ -29,7 +32,7 @@ export default function RecipeDetails({user}) {
     }
 
     try {
-      await request(`/recipes?id=eq.${recipeId}`, 'DELETE');
+      await recipeApi.remove(recipeId, accessToken);
       navigate('/recipes');
     } catch (error) {
       alert(error);

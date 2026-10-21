@@ -16,6 +16,14 @@ export const create = (data, accessToken) => {
     });
 }
 
+export const remove = async (recipeId, accessToken) => {
+    return request(`/recipes?id=eq.${recipeId}`, 'DELETE', null, {
+        headers: {
+            ...getAuthHeader(accessToken)
+        }
+    });
+}
+
 function getAuthHeader(accessToken) {
     return {
         ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {} )
