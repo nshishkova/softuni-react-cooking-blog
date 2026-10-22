@@ -1,6 +1,9 @@
 import { Link } from "react-router";
+import { useAuth } from "../../contexts/auth-context";
 
-export default function Register({ onRegister }) {
+export default function Register() {
+  const { register } = useAuth();
+
   const registerAction = (formData) => {
     const name = formData.get("name");
     const email = formData.get("email");
@@ -17,7 +20,7 @@ export default function Register({ onRegister }) {
       return;
     }
 
-    onRegister({ name, email, password });
+    register({ name, email, password });
   };
 
   return (
