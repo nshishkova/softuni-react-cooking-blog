@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 import { useNavigate } from 'react-router';
 import { authApi } from '../api';
 import usePersistedState from '../hooks/usePersistedState';
@@ -69,10 +69,5 @@ export function AuthProvider({ children }) {
         </AuthContext.Provider>
     );
 }
-
-export function useAuth() {
-    return useContext(AuthContext);
-}
-
 
 export default AuthContext;

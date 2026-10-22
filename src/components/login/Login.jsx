@@ -1,5 +1,5 @@
-import { useAuth } from "../../contexts/auth-context";
-
+import { useAuth } from "../../hooks/useAuth";
+  
 export default function Login() {
   const { login } = useAuth();
 

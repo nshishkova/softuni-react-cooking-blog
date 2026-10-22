@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { useAuth } from "../../contexts/auth-context";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function Register() {
   const { register } = useAuth();
