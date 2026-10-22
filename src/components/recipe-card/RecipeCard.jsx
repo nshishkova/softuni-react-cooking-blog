@@ -6,10 +6,12 @@ export default function RecipeCard(
   return (
     <article className="recipe-card">
       <Link to={`/recipes/${id}`} className="recipe-image-link">
-        <img
-          src={imageUrl}
-          alt={title}
-        />
+        {imageUrl && (
+          <img
+            src={imageUrl}
+            alt={title}
+          />
+        )}
         {/* <span className="recipe-tag">Quick & easy</span> */}
       </Link>
       <div className="recipe-card-body">

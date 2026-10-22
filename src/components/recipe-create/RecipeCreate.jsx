@@ -132,17 +132,19 @@ export default function RecipeCreate() {
               <>
                 <label htmlFor="fileUpload">Upload File</label>
                 <input
+                  key="fileUpload"
                   id="fileUpload"
                   name="image"
                   type="file"
                   onChange={fileChangeHandler}
                 />
-                <img src={previewUrl} alt="preview" />
+                {previewUrl && <img src={previewUrl} alt="preview" />}
               </>
             ) : (
               <>
                 <label htmlFor="imageUrl">Image URL</label>
                 <input
+                  key="imageUrl"
                   id="imageUrl"
                   name="imageUrl"
                   type="text"

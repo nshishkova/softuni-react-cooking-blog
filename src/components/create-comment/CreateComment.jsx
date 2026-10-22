@@ -1,8 +1,12 @@
-import { commentApi } from '../../api';
+import * as commentApi from '../../api/comment-api';
+import { useContext } from 'react';
+import { CommentContext } from '../../contexts/comment-context';
 
-export default function CreateComment({ user, recipeId, onCreate }) {
+export default function CreateComment({ user, recipeId }) {
+    const { dispatch } = useContext(CommentContext);
 
     const addCommentAction = async (formData) => {
+
         const newComment = {
             text: formData.get('text'),
             author: user?.email,
@@ -10,8 +14,9 @@ export default function CreateComment({ user, recipeId, onCreate }) {
             user_id: user?.id
         }
         try {
-            await commentApi.create(newComment);
-            onCreate();
+            const result = await commentApi.create(newComment);
+
+            dispatch({ type: 'ADD_COMMENT', payload: result[0] });
         } catch (error) {
             alert(error);
         }

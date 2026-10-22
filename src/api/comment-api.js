@@ -1,19 +1,13 @@
 import request from '../utils/request';
 
-export const getAll = async (recipeId) => {
+export const getAll = (recipeId) => {
     return request(`/comments?recipe_id=eq.${recipeId}&order=created_at.desc`);
 };
 
-export const create = async (data, accessToken) => {
-    return request('/comments', 'POST', data, {
-        headers: {
-            ...getAuthHeaders(accessToken)
-        }
-    });
+export const create = async (data) => {
+    return request('/comments', 'POST', data);
 }
 
-function getAuthHeaders(accessToken) {
-    return {
-        ...(accessToken ? {Authorization: `Bearer ${accessToken}`} : {})
-    };
-}
+export const remove = (id) => {
+    return request(`/comments?id=eq.${id}`, 'DELETE');
+};

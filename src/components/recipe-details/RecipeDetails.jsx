@@ -5,13 +5,13 @@ import CreateComment from "../create-comment/CreateComment.jsx";
 import request from "../../utils/request";
 import { recipeApi } from "../../api";
 import AuthContext from "../../contexts/auth-context";
+import { CommentProvider } from "../../contexts/comment-context.jsx";
 
 export default function RecipeDetails() {
   const { user, isAuthenticated } = useContext(AuthContext);
   const { recipeId } = useParams();
   const [recipe, setRecipe] = useState({});
   const navigate = useNavigate();
-  const [refresh, setRefresh] = useState(false);
 
   const isOwner = user && user?.id === recipe?.user_id;
 
@@ -43,6 +43,7 @@ export default function RecipeDetails() {
   }
 
   return (
+    <CommentProvider>
     <main id="main">
       <section className="container recipe-detail">
         <a className="back-link" href="/recipes">
@@ -81,7 +82,7 @@ export default function RecipeDetails() {
               </>)}
             </div>
           </div>
-          <img src={recipe.imageUrl} alt={recipe.title} />
+          {recipe.imageUrl && <img src={recipe.imageUrl} alt={recipe.title} />}
         </div>
         <div className="detail-columns">
           <section className="detail-panel">
@@ -125,10 +126,10 @@ export default function RecipeDetails() {
         <section className="comments-section">
           <span className="eyebrow">Around the table</span>
           <h2>Comments & tips</h2>
-          <ListComment recipeId={recipeId} refresh={refresh} /> 
+          <ListComment recipeId={recipeId} /> 
           
           {isAuthenticated && !isOwner ? (
-            <CreateComment user={user} recipeId={recipeId} onCreate={() => setRefresh(state => !state)} />
+            <CreateComment user={user} recipeId={recipeId} />
           ) : (
             <p>
                 <a className="button button-primary" href="/login">
@@ -140,5 +141,6 @@ export default function RecipeDetails() {
         </section>
       </section>
     </main>
+    </CommentProvider>
   );
 }
