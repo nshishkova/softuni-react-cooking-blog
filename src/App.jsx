@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router";
 import { authApi } from "./api"
-import { useState } from "react";
 import { useNavigate } from "react-router";
 import Logout from "./components/logout/Logout";
 import Login from "./components/login/Login";
@@ -13,10 +12,12 @@ import Home from "./components/home/Home";
 import Catalog from "./components/catalog/Catalog";
 import RecipeDetails from "./components/recipe-details/RecipeDetails";
 import AuthContext from "./contexts/auth-context";
+import usePersistedState from "./hooks/usePersistedState";
 
 function App() {
-  const [auth, setAuth] = useState(null);
   const navigate = useNavigate();
+  
+  const [auth, setAuth] = usePersistedState("auth", null);
 
   const register = async (userData) => {
     try {
