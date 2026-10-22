@@ -7,7 +7,7 @@ import { recipeApi } from "../../api";
 import AuthContext from "../../contexts/auth-context";
 
 export default function RecipeDetails() {
-  const { user, accessToken, isAuthenticated } = useContext(AuthContext);
+  const { user, isAuthenticated } = useContext(AuthContext);
   const { recipeId } = useParams();
   const [recipe, setRecipe] = useState({});
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function RecipeDetails() {
     }
 
     try {
-      await recipeApi.remove(recipeId, accessToken);
+      await recipeApi.remove(recipeId);
       navigate('/recipes');
     } catch (error) {
       alert(error);
@@ -128,7 +128,7 @@ export default function RecipeDetails() {
           <ListComment recipeId={recipeId} refresh={refresh} /> 
           
           {isAuthenticated && !isOwner ? (
-            <CreateComment user={user} recipeId={recipeId} accessToken={accessToken} onCreate={() => setRefresh(state => !state)} />
+            <CreateComment user={user} recipeId={recipeId} onCreate={() => setRefresh(state => !state)} />
           ) : (
             <p>
                 <a className="button button-primary" href="/login">

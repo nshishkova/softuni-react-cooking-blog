@@ -1,6 +1,6 @@
 import { commentApi } from '../../api';
 
-export default function CreateComment({ user, recipeId, onCreate, accessToken }) {
+export default function CreateComment({ user, recipeId, onCreate }) {
 
     const addCommentAction = async (formData) => {
         const newComment = {
@@ -10,7 +10,7 @@ export default function CreateComment({ user, recipeId, onCreate, accessToken })
             user_id: user?.id
         }
         try {
-            await commentApi.create(newComment, accessToken);
+            await commentApi.create(newComment);
             onCreate();
         } catch (error) {
             alert(error);

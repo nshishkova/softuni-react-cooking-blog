@@ -8,10 +8,6 @@ export const login = async ({email, password}) => {
     return authRequest('/token?grant_type=password', 'POST', {email, password});
 };
 
-export const logout = async (accessToken) => {
-    return authRequest('/logout', 'POST', null, {
-        headers: {
-            Authorization: `Bearer ${accessToken}`
-        }
-    });
+export const logout = async () => {
+    return authRequest('/logout', 'POST');
 };

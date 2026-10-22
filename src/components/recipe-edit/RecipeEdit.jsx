@@ -1,6 +1,5 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
-import AuthContext from "../../contexts/auth-context";
 import request from "../../utils/request";
 import { recipeApi } from "../../api";
 
@@ -16,9 +15,8 @@ const initialValues = {
 
 export default function RecipeEdit() {
   const { recipeId } = useParams();
-  const navigate = useNavigate();
   const [recipe, setRecipe] = useState(initialValues);
-  const { accessToken } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const changeHandler = (e) => {
     setRecipe(state => ({
@@ -34,7 +32,7 @@ export default function RecipeEdit() {
 
   const editAction = async () => {
     try {
-      await recipeApi.update(recipeId, recipe, accessToken);
+      await recipeApi.update(recipeId, recipe);
 
       navigate(`/recipes/${recipeId}`);
     } catch (error) {
