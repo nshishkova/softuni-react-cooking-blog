@@ -3,45 +3,45 @@ const restUrl = "https://wdbphrvyoroyjmpwkelo.supabase.co/rest/v1";
 const authUrl = "https://wdbphrvyoroyjmpwkelo.supabase.co/auth/v1";
 const storageUrl = "https://wdbphrvyoroyjmpwkelo.supabase.co/storage/v1/object/images";
 
-export async function uploadFile(fileName, file) {
-    const options = {
-        headers: {
-            apiKey: import.meta.env.VITE_API_KEY,
-            'Content-Type': file.type || 'application/octet-stream'
-        }
-    };
-    const response = await fetch(`${storageUrl}/${fileName}`, {
-        method: "POST",
-        body: file,
-        ...options,
-    });
+// export async function uploadFile(fileName, file) {
+//     const options = {
+//         headers: {
+//             apiKey: import.meta.env.VITE_API_KEY,
+//             'Content-Type': file.type || 'application/octet-stream'
+//         }
+//     };
+//     const response = await fetch(`${storageUrl}/${fileName}`, {
+//         method: "POST",
+//         body: file,
+//         ...options,
+//     });
 
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    return `https://wdbphrvyoroyjmpwkelo.supabase.co/storage/v1/object/images/${fileName}`;
+//     if (!response.ok) {
+//         throw new Error(`HTTP error! status: ${response.status}`);
+//     }
 
-}
+//     return `https://wdbphrvyoroyjmpwkelo.supabase.co/storage/v1/object/images/${fileName}`;
+
+// }
 
 async function baseRequest(url, path = "/", method = "GET", data = null, opts = {}) {
-        const options = {
-            ...opts,
-            headers: {
-                ...opts.headers,
-                apiKey: import.meta.env.VITE_API_KEY,
-                Prefer: "return=representation",
-                ...getAuthHeader()
-            },
-        };
+    const options = {
+        ...opts,
+        headers: {
+            ...opts.headers,
+            apiKey: import.meta.env.VITE_API_KEY,
+            Prefer: "return=representation",
+            ...getAuthHeader()
+        },
+    };
 
     if (method !== "GET") {
         options.method = method;
     }
 
     if (data) {
-        options.headers["Content-Type"] = "application/json";
-        options.body = JSON.stringify(data);
+        options.headers["Content-Type"] = options.headers["Content-Type"] || "application/json";
+        options.body = data instanceof File ? data : JSON.stringify(data);
     }
 
     const response = await fetch(`${url}${path}`, options);
@@ -60,18 +60,24 @@ async function baseRequest(url, path = "/", method = "GET", data = null, opts = 
 export default async function request(path = "/", method = "GET", data = null, opts = {}) {
     return baseRequest(restUrl, path, method, data, opts);
 }
-//export default baseRequest.bind(null, restUrl);
 
 export const authRequest = async (path = "/", method = "GET", data = null, opts = {}) => {
     return baseRequest(authUrl, path, method, data, opts);
 };
-//export const authRequest = baseRequest.bind(null, authUrl);
+
+export const storageRequest = async (fileName, file) => {
+    return baseRequest(storageUrl, `/${fileName}`, "POST", file, {
+        headers: {
+            'Content-Type': file.type || "application/octet-stream",
+        }
+    });
+};
 
 function getAuthHeader() {
-  const auth = localStorage.getItem("auth");
-  const accessToken = auth ? JSON.parse(auth)?.access_token : null;
+    const auth = localStorage.getItem("auth");
+    const accessToken = auth ? JSON.parse(auth)?.access_token : null;
 
-  return {
-    ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-  };
+    return {
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+    };
 }
