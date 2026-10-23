@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 //import { uploadFile } from "../../utils/request";
 import { useNavigate } from "react-router";
 import * as gameApi from "../../api/recipe-api";
@@ -38,11 +39,12 @@ export default function RecipeCreate() {
     try {
       //await gameApi.create({values, imageUrl}, accessToken);
       await gameApi.create(values);
+      toast.success("Recipe created successfully!");
 
 
       navigate("/recipes");
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     }
   };
 
