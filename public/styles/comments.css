@@ -1,3 +1,19 @@
 /* Comments and community feedback */
-.comments-section { margin-top: 3rem; }
-.comment-form textarea { width: 100%; box-sizing: border-box; }
+.comments-section { margin-top: 3rem; max-width: 760px; }
+.comment-card p { margin: 0.35rem 0 0.75rem; }
+.comment-form {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+.comment-form label { font-weight: 600; }
+.comment-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #dce5d8;
+  border-radius: 10px;
+  padding: 13px;
+  font: inherit;
+  resize: vertical;
+}
+.comment-form .button { justify-self: start; }

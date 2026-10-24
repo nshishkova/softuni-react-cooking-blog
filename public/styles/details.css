@@ -10,6 +10,7 @@
 }
 .detail-hero img {
   width: 100%;
+  max-height: 380px;
   aspect-ratio: 4/3;
   object-fit: cover;
   border-radius: 1.25rem;
@@ -23,21 +24,90 @@
 }
 .detail-columns {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
-  gap: 2.5rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  gap: 1.75rem;
   margin-top: 3rem;
+  align-items: start;
 }
-.detail-panel {
-  background: #f5f6ef;
-  border-radius: 1rem;
-  padding: 1.5rem;
+/* Both columns (ingredients + instructions) are matching cards */
+.detail-columns > section {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.75rem 2rem;
+  box-shadow: 0 6px 20px rgba(24, 59, 43, 0.05);
 }
-.detail-panel li {
-  margin: 0.65rem 0;
+.detail-columns h2 {
+  margin: 0.25rem 0 1rem;
+}
+.detail-columns ul,
+.detail-columns ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.detail-columns li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.detail-columns li:last-child {
+  border-bottom: none;
+}
+
+/* Ingredients: small green dot before each item */
+.detail-columns ul li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.detail-columns ul li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+/* Instructions: numbered circles */
+.detail-columns ol {
+  counter-reset: step;
+}
+.detail-columns ol li {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.9rem;
+  align-items: start;
+}
+.detail-columns ol li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--green-pale);
+  color: var(--green);
+  font-weight: 700;
+  font-size: 0.85rem;
 }
 .comment-card {
   border-bottom: 1px solid #e3e6dc;
   padding: 1rem 0;
+}
+/* Profile page */
+.profile-page {
+  padding: 2.5rem 0 4rem;
+}
+.profile-heading {
+  margin-bottom: 1rem;
+}
+.profile-section {
+  margin-top: 2.5rem;
+}
+.profile-section h2 {
+  margin-bottom: 1.25rem;
 }
 @media (max-width: 720px) {
   .detail-hero,

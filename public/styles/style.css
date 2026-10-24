@@ -1449,6 +1449,16 @@ input:focus-visible {
   font-weight: 400;
   color: var(--muted);
 }
+.field-error {
+  margin: 6px 0 0;
+  color: #b3261e;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 .form-actions {
   display: flex;
   justify-content: flex-end;
