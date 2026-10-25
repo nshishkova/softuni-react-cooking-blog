@@ -3,6 +3,8 @@ import { Link, useParams, useNavigate } from "react-router";
 import request, { storageRequest } from "../../utils/request";
 import { recipeApi } from "../../api";
 import { useAuth } from "../../hooks/useAuth";
+import { toast } from "react-toastify";
+import { categories, validateRecipe } from "../../utils/recipe-form";
 
 const initialValues = {
   title: "",
@@ -21,6 +23,8 @@ export default function RecipeEdit() {
   const [isFileUpload, setIsFileUpload] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -51,28 +55,51 @@ export default function RecipeEdit() {
     request(`/recipes?id=eq.${recipeId}`)
       .then(data => {
         if (!data[0]) {
-          alert("Recipe not found.");
+          toast.error("Recipe not found.");
           navigate("/recipes");
           return;
         }
 
         setRecipe(data[0]);
       })
-      .catch(error => alert(error.message));
+      .catch(error => toast.error(error.message));
   }, [recipeId, navigate]);
 
   const editAction = async () => {
+    // The recipe can keep its current image if no new file is chosen
+    const validationErrors = validateRecipe(recipe, imageFile, isFileUpload, !!recipe.imageUrl);
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
+      toast.error("Please fix the highlighted fields.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
     try {
       // Upload the new file if one was chosen, otherwise keep the image URL
       const imageUrl = isFileUpload && imageFile
         ? await storageRequest(`${crypto.randomUUID()}-${imageFile.name}`, imageFile)
-        : recipe.imageUrl;
+        : recipe.imageUrl.trim();
 
-      await recipeApi.update(recipeId, { ...recipe, imageUrl });
+      await recipeApi.update(recipeId, {
+        ...recipe,
+        title: recipe.title.trim(),
+        description: recipe.description.trim(),
+        prepTime: Number(recipe.prepTime),
+        servings: Number(recipe.servings),
+        ingredients: recipe.ingredients.trim(),
+        instructions: recipe.instructions.trim(),
+        imageUrl,
+      });
 
+      toast.success("Recipe updated successfully!");
       navigate(`/recipes/${recipeId}`);
     } catch (error) {
-      alert(error);
+      toast.error(error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -94,7 +121,7 @@ export default function RecipeEdit() {
         <p>Update the details, improve the instructions, or add a new tip.</p>
       </section>
       <section className="editor-layout">
-        <form className="design-form editor-form" action={editAction}>
+        <form className="design-form editor-form" action={editAction} noValidate>
           <div className="form-section-title">
             <span>01</span>
             <div>
@@ -111,7 +138,9 @@ export default function RecipeEdit() {
             value={recipe.title}
             onChange={changeHandler}
             required
-          /><label htmlFor="description">Short description</label
+          />
+          {errors.title && <p className="field-error">{errors.title}</p>}
+          <label htmlFor="description">Short description</label
           ><textarea
             id="description"
             name="description"
@@ -120,16 +149,15 @@ export default function RecipeEdit() {
             value={recipe.description}
             onChange={changeHandler}
           ></textarea>
+          {errors.description && <p className="field-error">{errors.description}</p>}
           <div className="form-two-col">
             <div>
               <label htmlFor="category">Category</label
               ><select id="category" name="category" value={recipe.category} onChange={changeHandler}>
-                <option>Choose a category</option>
-                <option>Breakfast</option>
-                <option>Lunch</option>
-                <option>Dinner</option>
-                <option>Dessert</option>
+                <option value="">Choose a category</option>
+                {categories.map(category => <option key={category}>{category}</option>)}
               </select>
+              {errors.category && <p className="field-error">{errors.category}</p>}
             </div>
             <div>
               <label htmlFor="time">Prep + cook time (minutes)</label
@@ -142,6 +170,7 @@ export default function RecipeEdit() {
                 onChange={changeHandler}
                 placeholder="20"
               />
+              {errors.prepTime && <p className="field-error">{errors.prepTime}</p>}
             </div>
             <div>
               <label htmlFor="servings">Servings</label
@@ -154,6 +183,7 @@ export default function RecipeEdit() {
                 onChange={changeHandler}
                 placeholder="4"
               />
+              {errors.servings && <p className="field-error">{errors.servings}</p>}
             </div>
           </div>
           <div className="form-two-col">
@@ -193,6 +223,7 @@ export default function RecipeEdit() {
               </>
             )}
           </div>
+          {errors.image && <p className="field-error">{errors.image}</p>}
           <label htmlFor="ingredients"
           >Ingredients <span className="label-hint">One per line</span></label
           ><textarea
@@ -202,8 +233,9 @@ export default function RecipeEdit() {
             value={recipe.ingredients}
             onChange={changeHandler}
             name="ingredients"
-          ></textarea
-          ><label htmlFor="instructions">Instructions <span className="label-hint">One per line</span></label
+          ></textarea>
+          {errors.ingredients && <p className="field-error">{errors.ingredients}</p>}
+          <label htmlFor="instructions">Instructions <span className="label-hint">One per line</span></label
           ><textarea
             id="instructions"
             rows="6"
@@ -212,10 +244,11 @@ export default function RecipeEdit() {
             onChange={changeHandler}
             name="instructions"
           ></textarea>
+          {errors.instructions && <p className="field-error">{errors.instructions}</p>}
           <div className="form-actions">
             <Link className="button button-outline" to={`/recipes/${recipeId}`}>Cancel</Link
-            ><button className="button button-primary" type="submit">
-              Save changes ✓
+            ><button className="button button-primary" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Saving…" : "Save changes ✓"}
             </button>
           </div>
         </form>

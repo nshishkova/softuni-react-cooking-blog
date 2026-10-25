@@ -26,8 +26,8 @@ export function validateRecipe(values, imageFile, isFileUpload, hasCurrentImage 
   const title = values.title.trim();
   if (!title) {
     errors.title = "Title is required.";
-  } else if (title.length < 3 || title.length > 30) {
-    errors.title = "Title must be between 3 and 30 characters.";
+  } else if (title.length < 3 || title.length > 60) {
+    errors.title = "Title must be between 3 and 60 characters.";
   }
 
   if (values.description.trim().length < 10) {

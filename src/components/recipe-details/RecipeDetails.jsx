@@ -9,18 +9,8 @@ import { toast } from "react-toastify";
 import AuthContext from "../../contexts/auth-context";
 import { CommentProvider } from "../../contexts/comment-context.jsx";
 
-// Ingredients and instructions can come back as an array or as multiline text.
-const toList = (value) => {
-  if (Array.isArray(value)) {
-    return value;
-  }
-
-  if (typeof value === "string") {
-    return value.split("\n").map(line => line.trim()).filter(Boolean);
-  }
-
-  return [];
-};
+// Ingredients and instructions are saved as text with one item per line
+const toList = (text = "") => text.split("\n").map(line => line.trim()).filter(Boolean);
 
 
 export default function RecipeDetails() {
