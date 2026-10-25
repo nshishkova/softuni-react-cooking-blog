@@ -1,8 +1,10 @@
 import { Link } from "react-router";
 
 export default function RecipeCard(
-    { id, title, description, category, imageUrl, prepTime }
+    { id, title, description, category, imageUrl, prepTime, author }
 ) {
+  const authorName = author || "Anonymous";
+
   return (
     <article className="recipe-card">
       <Link to={`/recipes/${id}`} className="recipe-image-link">
@@ -25,9 +27,8 @@ export default function RecipeCard(
         </h3>
         <p>{description}</p>
         <div className="recipe-author">
-          <span className="author-avatar">E</span>
-          <span>by Emma Wilson</span>
-          <span className="recipe-rating">★ 4.9</span>
+          <span className="author-avatar">{authorName[0].toUpperCase()}</span>
+          <span>by {authorName}</span>
         </div>
       </div>
     </article>

@@ -2,18 +2,40 @@ import ListComment from '../list-comment/ListComment';
 import { Link, useParams, useNavigate } from "react-router";
 import { useEffect, useState, useContext } from "react";
 import CreateComment from "../create-comment/CreateComment.jsx";
+import ConfirmModal from "../confirm-modal/ConfirmModal.jsx";
 import request from "../../utils/request";
-import { recipeApi } from "../../api";
+import { recipeApi, savedApi } from "../../api";
+import { toast } from "react-toastify";
 import AuthContext from "../../contexts/auth-context";
 import { CommentProvider } from "../../contexts/comment-context.jsx";
+
+// Ingredients and instructions can come back as an array or as multiline text.
+const toList = (value) => {
+  if (Array.isArray(value)) {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    return value.split("\n").map(line => line.trim()).filter(Boolean);
+  }
+
+  return [];
+};
+
 
 export default function RecipeDetails() {
   const { user, isAuthenticated } = useContext(AuthContext);
   const { recipeId } = useParams();
   const [recipe, setRecipe] = useState({});
+  const [isSaved, setIsSaved] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const navigate = useNavigate();
 
   const isOwner = user && user?.id === recipe?.user_id;
+  const ingredients = toList(recipe?.ingredients);
+  const instructions = toList(recipe?.instructions);
 
 
   useEffect(() => {
@@ -24,48 +46,102 @@ export default function RecipeDetails() {
       .catch((error) => alert(error));
   }, [recipeId]);
 
-  const deleteRecipeClickHandler = async (e) => {
+  // Check if the logged-in user has already saved this recipe
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    savedApi.isSaved(recipeId, user.id)
+      .then(setIsSaved)
+      .catch(() => setIsSaved(false));
+  }, [recipeId, user]);
+
+  const saveClickHandler = async () => {
+    setIsSaving(true);
+
+    try {
+      if (isSaved) {
+        await savedApi.unsave(recipeId, user.id);
+        setIsSaved(false);
+        toast.info("Recipe removed from your saved recipes.");
+      } else {
+        await savedApi.save(recipeId, user.id);
+        setIsSaved(true);
+        toast.success("Recipe saved!");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const deleteRecipeClickHandler = (e) => {
     e.preventDefault();
 
-    const confirmed = confirm(`Are you sure you want to delete ${recipe.title} recipe?`);
+    setShowDeleteModal(true);
+  };
 
-    if (!confirmed) {
-        return;
-    }
+  const confirmDeleteHandler = async () => {
+    setIsDeleting(true);
 
     try {
       await recipeApi.remove(recipeId);
+      toast.success("Recipe deleted.");
       navigate('/recipes');
     } catch (error) {
-      alert(error);
+      toast.error(error.message);
+      setIsDeleting(false);
+      setShowDeleteModal(false);
     }
-    
-  }
+  };
 
   return (
     <CommentProvider>
+    {showDeleteModal && (
+      <ConfirmModal
+        title="Delete this recipe?"
+        message={`"${recipe.title}" will be deleted permanently. This can't be undone.`}
+        confirmText="Yes, delete"
+        isLoading={isDeleting}
+        onConfirm={confirmDeleteHandler}
+        onCancel={() => setShowDeleteModal(false)}
+      />
+    )}
     <main id="main">
       <section className="container recipe-detail">
-        <a className="back-link" href="/recipes">
+        <Link className="back-link" to="/recipes">
           ← Back to all recipes
-        </a>
+        </Link>
         <div className="detail-hero">
           <div>
-            <span className="eyebrow">A community favorite · Dinner</span>
+            {recipe.category && <span className="eyebrow">{recipe.category}</span>}
             <h1>{recipe.title}</h1>
             <p className="hero-description">{recipe.description}</p>
             <div className="detail-meta">
               <span>◷ {recipe.prepTime} minutes</span>
-              <span>♧ Easy</span>
-              <span>★ 4.9 (28 reviews)</span>
+              {/* <span>♧ Easy</span> */}
+              {/* <span>★ 4.9 (28 reviews)</span> */}
             </div>
             <p>
-              Shared by <strong>Emma Wilson</strong>
+              Shared by <strong>{recipe.author}</strong>
             </p>
             <div className="hero-actions">
-              <a href="/login" className="button button-primary">
-                ♡ Save recipe
-              </a>
+              {isAuthenticated ? (
+                <button
+                  type="button"
+                  className={isSaved ? "button button-outline" : "button button-primary"}
+                  onClick={saveClickHandler}
+                  disabled={isSaving}
+                >
+                  {isSaved ? "♥ Saved" : "♡ Save recipe"}
+                </button>
+              ) : (
+                <Link to="/login" className="button button-primary">
+                  ♡ Log in to save
+                </Link>
+              )}
 
               {isOwner && (
               <>
@@ -76,9 +152,9 @@ export default function RecipeDetails() {
                   ✏️ Edit recipe
                 </Link>
 
-                <a href={`/recipes/${recipeId}/delete`} type="button" className="button button-outline" onClick={deleteRecipeClickHandler}>
+                <Link to={`/recipes/${recipeId}/delete`} type="button" className="button button-outline button-danger" onClick={deleteRecipeClickHandler}>
                   🗑️ Delete recipe
-                </a>
+                </Link>
               </>)}
             </div>
           </div>
@@ -88,39 +164,28 @@ export default function RecipeDetails() {
           <section className="detail-panel">
             <span className="eyebrow">What you'll need</span>
             <h2>Ingredients</h2>
-            <ul>
-              <li>250 g pasta</li>
-              <li>150 g ricotta cheese</li>
-              <li>1 lemon, zested and juiced</li>
-              <li>2 tbsp olive oil</li>
-              <li>Fresh basil leaves</li>
-              <li>Salt and freshly ground pepper</li>
-              <li>Grated parmesan, to serve</li>
-            </ul>
+            {ingredients.length > 0 ? (
+              <ul>
+                {ingredients.map((ingredient, index) => (
+                  <li key={index}>{ingredient}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No ingredients listed.</p>
+            )}
           </section>
           <section>
             <span className="eyebrow">Let's get cooking</span>
             <h2>Instructions</h2>
-            <ol>
-              <li>
-                <strong>Cook the pasta.</strong> Bring a pot of salted water to
-                a boil and cook pasta according to the package instructions.
-                Save a mug of pasta water before draining.
-              </li>
-              <li>
-                <strong>Make the sauce.</strong> Stir ricotta, lemon zest, lemon
-                juice, olive oil, salt, and pepper in a large bowl.
-              </li>
-              <li>
-                <strong>Bring it together.</strong> Add the hot pasta and a
-                splash of pasta water. Toss until the sauce is silky and coats
-                every strand.
-              </li>
-              <li>
-                <strong>Finish and serve.</strong> Add fresh basil and parmesan.
-                Taste, season, and enjoy straight away.
-              </li>
-            </ol>
+            {instructions.length > 0 ? (
+              <ol>
+                {instructions.map((step, index) => (
+                  <li key={index}>{step}</li>
+                ))}
+              </ol>
+            ) : (
+              <p>No instructions yet.</p>
+            )}
           </section>
         </div>
         <section className="comments-section">
@@ -128,16 +193,15 @@ export default function RecipeDetails() {
           <h2>Comments & tips</h2>
           <ListComment recipeId={recipeId} /> 
           
-          {isAuthenticated && !isOwner ? (
+          {isAuthenticated ? (
             <CreateComment user={user} recipeId={recipeId} />
           ) : (
-            <p>
-                <a className="button button-primary" href="/login">
-                    Log in to comment
-                </a>
+            <p className="comment-login">
+              <Link className="button button-primary" to="/login">
+                Log in to comment
+              </Link>
             </p>
-          )
-          }
+          )}
         </section>
       </section>
     </main>

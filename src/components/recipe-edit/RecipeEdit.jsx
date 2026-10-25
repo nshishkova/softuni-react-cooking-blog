@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router";
-import request from "../../utils/request";
+import { Link, useParams, useNavigate } from "react-router";
+import request, { storageRequest } from "../../utils/request";
 import { recipeApi } from "../../api";
+import { useAuth } from "../../hooks/useAuth";
 
 const initialValues = {
   title: "",
   description: "",
   category: "",
   prepTime: "",
+  servings: "",
   imageUrl: "",
   ingredients: "",
   instructions: "",
@@ -16,7 +18,27 @@ const initialValues = {
 export default function RecipeEdit() {
   const { recipeId } = useParams();
   const [recipe, setRecipe] = useState(initialValues);
+  const [isFileUpload, setIsFileUpload] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  // Release the preview object URL when it changes or the component unmounts.
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
+  const fileChangeHandler = (e) => {
+    const file = e.target.files[0];
+
+    setImageFile(file || null);
+    setPreviewUrl(file ? URL.createObjectURL(file) : null);
+  };
 
   const changeHandler = (e) => {
     setRecipe(state => ({
@@ -27,12 +49,26 @@ export default function RecipeEdit() {
 
   useEffect(() => {
     request(`/recipes?id=eq.${recipeId}`)
-      .then(data => setRecipe(data[0]))
-  }, [recipeId]);
+      .then(data => {
+        if (!data[0]) {
+          alert("Recipe not found.");
+          navigate("/recipes");
+          return;
+        }
+
+        setRecipe(data[0]);
+      })
+      .catch(error => alert(error.message));
+  }, [recipeId, navigate]);
 
   const editAction = async () => {
     try {
-      await recipeApi.update(recipeId, recipe);
+      // Upload the new file if one was chosen, otherwise keep the image URL
+      const imageUrl = isFileUpload && imageFile
+        ? await storageRequest(`${crypto.randomUUID()}-${imageFile.name}`, imageFile)
+        : recipe.imageUrl;
+
+      await recipeApi.update(recipeId, { ...recipe, imageUrl });
 
       navigate(`/recipes/${recipeId}`);
     } catch (error) {
@@ -40,10 +76,19 @@ export default function RecipeEdit() {
     }
   };
 
+  // Only the author of the recipe can edit it
+  if (recipe.user_id && recipe.user_id !== user?.id) {
+    return (
+      <main className="container form-page" id="main">
+        <p className="empty-state">You can only edit your own recipes.</p>
+      </main>
+    );
+  }
+
   return (
     <main className="container form-page" id="main">
       <section className="editor-heading">
-        <a className="back-link" href="index.html">← Back to recipes</a
+        <Link className="back-link" to={`/recipes/${recipeId}`}>← Back to recipe</Link
         ><span className="eyebrow">Make it even better</span>
         <h1>Edit your <em>recipe.</em></h1>
         <p>Update the details, improve the instructions, or add a new tip.</p>
@@ -74,8 +119,7 @@ export default function RecipeEdit() {
             placeholder="What makes this recipe special?"
             value={recipe.description}
             onChange={changeHandler}
-          >{recipe.description}</textarea
-          >
+          ></textarea>
           <div className="form-two-col">
             <div>
               <label htmlFor="category">Category</label
@@ -92,22 +136,64 @@ export default function RecipeEdit() {
               ><input
                 id="time"
                 type="number"
+                name="prepTime"
                 min="1"
                 value={recipe.prepTime}
                 onChange={changeHandler}
                 placeholder="20"
               />
             </div>
+            <div>
+              <label htmlFor="servings">Servings</label
+              ><input
+                id="servings"
+                type="number"
+                name="servings"
+                min="1"
+                value={recipe.servings}
+                onChange={changeHandler}
+                placeholder="4"
+              />
+            </div>
           </div>
-          <label htmlFor="image">Image URL</label
-          ><input
-            id="image"
-            name="imageUrl"
-            type="url"
-            value={recipe.imageUrl}
-            onChange={changeHandler}
-            placeholder="https://example.com/your-dish.jpg"
-          /><label htmlFor="ingredients"
+          <div className="form-two-col">
+            <label htmlFor="toggleFileUpload">Upload a new image as file?</label>
+            <input
+              id="toggleFileUpload"
+              name="toggleFileUpload"
+              type="checkbox"
+              checked={isFileUpload}
+              onChange={() => setIsFileUpload(!isFileUpload)}
+            />
+
+            {isFileUpload ? (
+              <>
+                <label htmlFor="fileUpload">Upload File</label>
+                <input
+                  key="fileUpload"
+                  id="fileUpload"
+                  name="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={fileChangeHandler}
+                />
+              </>
+            ) : (
+              <>
+                <label htmlFor="imageUrl">Image URL</label>
+                <input
+                  key="imageUrl"
+                  id="imageUrl"
+                  name="imageUrl"
+                  type="url"
+                  value={recipe.imageUrl}
+                  onChange={changeHandler}
+                  placeholder="https://example.com/your-dish.jpg"
+                />
+              </>
+            )}
+          </div>
+          <label htmlFor="ingredients"
           >Ingredients <span className="label-hint">One per line</span></label
           ><textarea
             id="ingredients"
@@ -115,34 +201,19 @@ export default function RecipeEdit() {
             placeholder="200 g pasta&#10;1 lemon&#10;Fresh basil"
             value={recipe.ingredients}
             onChange={changeHandler}
-          >
-            200 g pasta
-            1 lemon, zested
-            150 g ricotta
-            Fresh basil
-            Salt and black pepper</textarea
-          ><label htmlFor="instructions">Instructions</label
+            name="ingredients"
+          ></textarea
+          ><label htmlFor="instructions">Instructions <span className="label-hint">One per line</span></label
           ><textarea
             id="instructions"
             rows="6"
-            placeholder="1. Prepare your ingredients..."
+            placeholder="Prepare your ingredients..."
             value={recipe.instructions}
             onChange={changeHandler}
-          >
-            1. Cook pasta in salted water until al dente.
-            2. Mix ricotta with lemon zest and a splash of pasta water.
-            3. Toss pasta through the sauce.
-            4. Finish with basil and black pepper.</textarea
-          ><label htmlFor="tips">Tips (optional)</label
-          ><textarea
-            id="tips"
-            rows="3"
-            placeholder="Any substitutions or serving tips?"
-          >
-            Save a little pasta water to make the sauce silky.</textarea
-          >
+            name="instructions"
+          ></textarea>
           <div className="form-actions">
-            <a className="button button-outline" href="index.html">Cancel</a
+            <Link className="button button-outline" to={`/recipes/${recipeId}`}>Cancel</Link
             ><button className="button button-primary" type="submit">
               Save changes ✓
             </button>
@@ -158,13 +229,14 @@ export default function RecipeEdit() {
             </p>
           </div>
           <div className="aside-preview">
-            <span className="eyebrow">Current cover image</span
-            ><img
-              src="https://images.unsplash.com/photo-1671523557969-14e564017d09?auto=format&fit=crop&w=800&q=85"
-              alt="Lemon ricotta pasta"
-            />
-            <h3>Lemon ricotta pasta</h3>
-            <p>Dinner · 20 minutes</p>
+            <span className="eyebrow">
+              {previewUrl ? "New cover image" : "Current cover image"}
+            </span>
+            {(previewUrl || recipe.imageUrl) && (
+              <img src={previewUrl || recipe.imageUrl} alt={recipe.title} />
+            )}
+            <h3>{recipe.title}</h3>
+            <p>{recipe.category} · {recipe.prepTime} minutes</p>
           </div>
         </aside>
       </section>
