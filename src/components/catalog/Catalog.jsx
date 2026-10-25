@@ -19,7 +19,7 @@ export default function Catalog() {
        .catch((err) => {
            setError(err.message);
            toast.update(toastId, {
-               render: `Could not load recipes: ${err.message}`,
+               render: "Could not load recipes. Please try again later.",
                type: "error",
                isLoading: false,
                autoClose: 5000,
