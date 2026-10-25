@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 
 export default function Header() {
@@ -34,18 +34,18 @@ export default function Header() {
           id="primary-nav"
           aria-label="Main navigation"
         >
-          <Link to="/" className="nav-link active">
+          <NavLink to="/" end className="nav-link">
             Home
-          </Link>
-          <Link to="/recipes" className="nav-link">
+          </NavLink>
+          <NavLink to="/recipes" className="nav-link">
             Recipes
-          </Link>
-          <Link to="#categories" className="nav-link">
+          </NavLink>
+          {/* <Link to="/categories" className="nav-link">
             Categories
-          </Link>
-          <Link to="#about" className="nav-link">
+          </Link> */}
+          <NavLink to="/about" className="nav-link">
             About
-          </Link>
+          </NavLink>
         </nav>
 
         <div className="header-actions">

@@ -1,5 +1,6 @@
 import { useAuth } from "../../hooks/useAuth";
 import { toast } from "react-toastify";
+import { Link } from "react-router";
   
 export default function Login() {
   const { login } = useAuth();
@@ -50,21 +51,19 @@ export default function Login() {
             placeholder="Enter your password"
             required
           />
-          <div className="form-inline">
+          {/* <div className="form-inline">
             <label className="check-label">
               <input type="checkbox" /> Remember me
             </label>
             <a href="#forgot">Forgot password?</a>
-          </div>
+          </div> */}
           <button className="button button-primary form-submit" type="submit">
             Log in
           </button>
           <p className="form-switch">
-            New to RecipeHub? <a href="/register">Create an account</a>
+            New to RecipeHub? <Link to="/register">Create an account</Link>
           </p>
-          <p className="demo-note">
-            Design preview only — this form does not authenticate.
-          </p>
+
         </form>
       </section>
     </main>

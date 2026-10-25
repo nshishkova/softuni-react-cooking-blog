@@ -1,20 +1,22 @@
+import { Link } from "react-router";
+
 export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="container footer-main">
-        <a className="brand footer-brand" href="index.html">
+        <Link className="brand footer-brand" to="/">
           <span className="brand-mark" aria-hidden="true">
             r.
           </span>
           <span>
             recipe<span className="brand-accent">hub</span>
           </span>
-        </a>
+        </Link>
         <p>Good food. Shared often.</p>
         <nav aria-label="Footer navigation">
-          <a href="catalog.html">Recipes</a>
-          <a href="#about">Our story</a>
-          <a href="#contact">Contact</a>
+          <Link to="/recipes">Recipes</Link>
+          <Link to="/about">About</Link>
+          {/* <a href="#contact">Contact</a> */}
         </nav>
       </div>
       <div className="container footer-bottom">
