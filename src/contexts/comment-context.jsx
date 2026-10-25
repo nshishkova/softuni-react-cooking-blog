@@ -2,7 +2,6 @@ import { createContext } from "react";
 import { useReducer } from "react";
 import { commentReducer } from "../components/list-comment/comment-reducer";
 
-// The context must be exported from this module for consumers.
 // eslint-disable-next-line react-refresh/only-export-components
 export const CommentContext = createContext();
 

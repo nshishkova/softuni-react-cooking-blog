@@ -9,7 +9,7 @@ const AuthContext = createContext({
     isAuthenticated: false,
     register() { },
     login() { },
-    //logout: () => {}
+    logout() { }
 });
 
 export function AuthProvider({ children }) {
