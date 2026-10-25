@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router";
 import { recipeApi } from "../../api";
-import { storageRequest } from "../../utils/request";
+import { getImageUrl, storageRequest } from "../../utils/request";
 import { useAuth } from "../../hooks/useAuth";
-import { categories, validateRecipe } from "../../utils/recipe-form";
+import { categories, isValidUrl, validateRecipe } from "../../utils/recipe-form";
+
+// Uploaded once to the "images" bucket in Supabase Storage
+const sampleImage = getImageUrl("sample-recipe.jpeg");
 
 const initialValues = {
   title: "",
@@ -26,6 +29,10 @@ export default function RecipeCreate() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  // The chosen file or a valid image URL is shown in the preview card
+  const imageUrl = values.imageUrl.trim();
+  const coverImage = isFileUpload ? previewUrl : (isValidUrl(imageUrl) ? imageUrl : null);
 
   // Release the preview object URL when it changes or the component unmounts.
   useEffect(() => {
@@ -195,7 +202,6 @@ export default function RecipeCreate() {
                   accept="image/*"
                   onChange={fileChangeHandler}
                 />
-                {previewUrl && <img src={previewUrl} alt="preview" />}
               </>
             ) : (
               <>
@@ -259,10 +265,14 @@ export default function RecipeCreate() {
             </p>
           </div>
           <div className="aside-preview">
-            <span className="eyebrow">Your recipe, your way</span>
+            <span className="eyebrow">
+              {coverImage ? "Your cover image" : "Your recipe, your way"}
+            </span>
+            {/* Show the chosen image here, otherwise a sample photo. A broken link also falls back to the sample. */}
             <img
-              src="https://images.unsplash.com/photo-1671523557969-14e564017d09?auto=format&fit=crop&w=800&q=85"
-              alt="Pasta inspiration"
+              src={coverImage || sampleImage}
+              alt={coverImage ? "Preview of the chosen image" : "Pasta inspiration"}
+              onError={(e) => { e.currentTarget.src = sampleImage; }}
             />
             <h3>Make it feel like you.</h3>
             <p>Add the small details you wish you knew before making it.</p>

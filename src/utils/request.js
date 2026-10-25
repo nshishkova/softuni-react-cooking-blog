@@ -45,6 +45,9 @@ export const authRequest = async (path = "/", method = "GET", data = null, opts 
     return baseRequest(authUrl, path, method, data, opts);
 };
 
+// Returns the public URL of a file in the "images" bucket.
+export const getImageUrl = (fileName) => `${publicStorageUrl}/${fileName}`;
+
 // Uploads a file to the "images" bucket and returns its public URL.
 export const storageRequest = async (fileName, file) => {
     await baseRequest(storageUrl, `/${fileName}`, "POST", file, {
@@ -53,7 +56,7 @@ export const storageRequest = async (fileName, file) => {
         }
     });
 
-    return `${publicStorageUrl}/${fileName}`;
+    return getImageUrl(fileName);
 };
 
 // Supabase returns errors as JSON with different field names depending on the service.

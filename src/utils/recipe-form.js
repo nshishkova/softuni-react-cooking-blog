@@ -10,7 +10,7 @@ const isWholeNumberBetween = (value, min, max) => {
   return value !== "" && Number.isInteger(number) && number >= min && number <= max;
 };
 
-const isValidUrl = (value) => {
+export const isValidUrl = (value) => {
   try {
     const url = new URL(value);
     return url.protocol === "http:" || url.protocol === "https:";
