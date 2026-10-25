@@ -1,126 +1,108 @@
 # FoodMates
 
-FoodMates is my React project for the SoftUni ReactJS Regular Exam 2026.
+FoodMates is my project for the SoftUni ReactJS Regular Exam 2026.
 
-The project is a cooking blog where home cooks share their favorite recipes. Visitors can browse recipes by name or category and read the ingredients, instructions and comments. Registered users can share their own recipes, comment on recipes and save the ones they like to their profile.
+It's a cooking blog where people share their favorite recipes. You can browse and search recipes without an account. If you sign up, you can post your own recipes, leave comments and save the recipes you like.
 
-## Live Demo
+**Live demo:** https://foodmates.nshishkovaa.workers.dev/
 
-https://foodmates.nshishkovaa.workers.dev/
+**GitHub:** https://github.com/nshishkova/softuni-react-cooking-blog
 
-## GitHub Repository
+## Try It Out
 
-https://github.com/nshishkova/softuni-react-cooking-blog
+You can log in with this demo account:
 
-## Technologies
+| Email | Password |
+|---|---|
+| `demo@foodmates.com` | `demo123456` |
 
-- React 19
-- JavaScript
-- React Router
-- Vite
-- Supabase (REST API)
-- PostgreSQL
-- Supabase Authentication
-- Supabase Storage
-- React Toastify
-- CSS
-- ESLint
-- Cloudflare Workers (hosting)
+Or register your own account. To check that only the author can edit or delete a recipe, open a recipe from the demo account while logged in as a different user.
 
-## Project Structure
+### Sample recipe
 
-The project is separated into components, API services, contexts, hooks, utilities and CSS files.
+Copy these values into **Share a Recipe** to test creating a recipe. Uncheck "Upload image as file?" to paste the image link.
+
+| Field | Value |
+|---|---|
+| Recipe title | `Creamy Tomato Pasta` |
+| Short description | `A quick weeknight pasta with a rich tomato and cream sauce.` |
+| Category | `Dinner` |
+| Prep + cook time | `25` |
+| Servings | `4` |
+| Image URL | `https://www.saltandlavender.com/wp-content/uploads/2020/10/creamy-tomato-pasta-1.jpg` |
+
+**Ingredients** (one per line):
 
 ```text
-src/
-├── api/            Requests to Supabase (auth, recipes, comments, saved recipes)
-├── components/     Pages and UI components
-├── contexts/       AuthContext and CommentContext
-├── hooks/          Custom hooks (useAuth, usePersistedState)
-├── utils/          Base request function and form validation
-├── App.jsx         Routes
-└── main.jsx        Entry point
-
-public/
-├── styles/         External CSS files
-└── icons/          Logo and icons
+300 g pasta
+2 tbsp olive oil
+2 cloves garlic
+400 g canned tomatoes
+100 ml cream
+Salt and pepper
+Fresh basil
 ```
 
-The components contain the UI and page logic.
+**Instructions** (one step per line):
 
-The API files contain the Supabase requests for authentication, recipes, comments, saved recipes and images.
+```text
+Cook the pasta in salted water until al dente.
+Warm the olive oil in a pan and fry the garlic for 1 minute.
+Add the tomatoes and simmer for 10 minutes.
+Stir in the cream and season with salt and pepper.
+Mix the sauce with the pasta and top with fresh basil.
+```
 
-Authentication state is shared through `AuthContext`.
+## Built With
 
-More information about the project structure can be found in the [Architecture](#architecture) section below.
+- React 19 and React Router
+- Vite
+- Supabase (database, login and image storage)
+- React Toastify (pop-up messages)
+- Plain CSS
+- Cloudflare Workers (hosting)
 
 ---
 
-# Run the Project Locally
+# How to Run It
 
-## 1. Clone the repository
+1. Clone the project and open the folder:
 
-```bash
-git clone https://github.com/nshishkova/softuni-react-cooking-blog.git
-```
+   ```bash
+   git clone https://github.com/nshishkova/softuni-react-cooking-blog.git
+   cd softuni-react-cooking-blog
+   ```
 
-## 2. Open the project folder
+2. Install the packages:
 
-```bash
-cd softuni-react-cooking-blog
-```
+   ```bash
+   npm install
+   ```
 
-## 3. Install the dependencies
+3. Add the Supabase key. The repository has a `.env` file with a placeholder. Create a `.env.local` file next to it with the real key:
 
-```bash
-npm install
-```
+   ```env
+   VITE_API_KEY=your_supabase_anon_key
+   ```
 
-## 4. Configure the environment variables
+   Vite reads `.env.local` after `.env`, so the real key replaces the placeholder. `.env.local` is never committed to Git.
 
-The repository contains a `.env` file with a placeholder for the required variable.
+4. Start the app:
 
-Create a `.env.local` file in the root folder and add your Supabase anon key:
+   ```bash
+   npm run dev
+   ```
 
-```env
-VITE_API_KEY=your_supabase_anon_key
-```
+   Then open http://localhost:5173
 
-Vite loads `.env.local` after `.env`, so the real key overrides the placeholder. `.env.local` is ignored by Git and is never committed.
+Other useful commands:
 
-## 5. Start the development server
-
-```bash
-npm run dev
-```
-
-The application runs on http://localhost:5173
-
-## Other Commands
-
-Run ESLint:
-
-```bash
-npm run lint
-```
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-Build and preview the production version locally with Wrangler:
-
-```bash
-npm run preview
-```
-
-Build and deploy to Cloudflare Workers:
-
-```bash
-npm run deploy
-```
+| Command | What it does |
+|---|---|
+| `npm run lint` | Checks the code with ESLint |
+| `npm run build` | Makes a production build |
+| `npm run preview` | Builds and runs the production version locally |
+| `npm run deploy` | Builds and publishes the site to Cloudflare |
 
 ---
 
@@ -130,11 +112,10 @@ npm run deploy
 
 **Application Name:** FoodMates
 
-**Application Category / Topic:** Blog System / Cooking Recipes
+**Category / Topic:** Blog System – cooking recipes
 
 **Main Purpose:**
-
-FoodMates is a recipe-sharing blog for everyday home cooks. It gives them one place to find simple recipes and to share their own dishes with photos, ingredients and step-by-step instructions. Visitors can browse and search recipes, and registered users can publish recipes, comment on them and save their favorites.
+FoodMates is a place where home cooks can find simple recipes and share their own. Each recipe has a photo, a list of ingredients and step-by-step instructions. Anyone can read the recipes, and people with an account can post recipes, comment and keep a list of favorites.
 
 ---
 
@@ -142,14 +123,14 @@ FoodMates is a recipe-sharing blog for everyday home cooks. It gives them one pl
 
 ### Guest (Not Authenticated)
 
-- **Available pages / routes:** Home (`/`), Recipes Catalog (`/recipes`), Recipe Details (`/recipes/:recipeId`), About (`/about`), Login (`/login`), Register (`/register`)
-- **Public data shown:** all recipes (image, title, category, preparation time, description, author, ingredients, instructions) and the comments on each recipe
+- **Pages:** Home, Recipes, Recipe Details, About, Login and Register
+- **What they can see:** all recipes with their details and comments. They can also use the search.
 
 ### Authenticated User
 
-- **Main sections / pages:** all public pages, plus Share a Recipe (`/recipes/create`) and My Profile (`/profile`) with the user's own and saved recipes
-- **Details pages:** Recipe Details, where logged-in users can also save the recipe and add comments. The author of the recipe also sees Edit and Delete buttons.
-- **Create / Edit / Delete actions:** create recipes; edit and delete only their own recipes; add comments and delete only their own comments
+- **Pages:** everything a guest sees, plus **Share a Recipe** and **My Profile**. The profile shows the recipes you posted and the recipes you saved.
+- **Details page:** logged-in users can save the recipe and write a comment. If you're the author, you also see **Edit** and **Delete**.
+- **Create / Edit / Delete:** anyone logged in can post a recipe, but only the author can edit or delete it. The same goes for comments: you can only delete your own.
 
 ---
 
@@ -157,17 +138,17 @@ FoodMates is a recipe-sharing blog for everyday home cooks. It gives them one pl
 
 ### Authentication Flow
 
-- **What happens when the app loads:** `AuthProvider` reads the saved session from `localStorage`. If one exists, the user is logged in immediately.
-- **How authentication status is checked:** `AuthContext` provides `isAuthenticated` (true when a session exists). Components read it through the `useAuth` hook, for example the Header to show the right buttons and the route guards to allow or block pages.
-- **What happens on successful login or registration:** the Supabase Auth API returns the session (access token and user data). It is saved in `localStorage` and in the context, and the user is redirected to the Home page. On registration, the display name is stored in the user's metadata and is later used as the author name.
-- **What happens on logout:** the Supabase logout endpoint is called, the session is removed from `localStorage` and the context, and the user is redirected to the Home page.
+- **When the app loads:** it checks `localStorage` for a saved login. If there is one, you're logged in straight away.
+- **How the app knows you're logged in:** the login data lives in `AuthContext`. Any component can ask "is someone logged in?" through the `useAuth` hook. The header uses it to show the right buttons, and the route guards use it to allow or block pages.
+- **After login or register:** Supabase sends back a token and the user's data. The app saves them and takes you to the Home page. When you register, your display name is saved too, and it's shown as the author on your recipes and comments.
+- **On logout:** the app tells Supabase to end the session, deletes the saved login and takes you back to Home.
 
 ### Session Persistence
 
-- **How is the user session stored?** In `localStorage` (key `auth`), through the custom `usePersistedState` hook, and shared across the app with `AuthContext`. The access token is added automatically to every request to Supabase.
-- **How is automatic login handled after a page refresh?** `usePersistedState` reads the saved session from `localStorage` when the app starts, so the user stays logged in after a refresh.
+- **Where the session is stored:** in `localStorage`, using my own hook `usePersistedState`. It works like `useState`, but it also saves the value in the browser.
+- **After a page refresh:** the hook reads the saved login when the app starts, so you stay logged in.
 
-**Note:** The Supabase access token expires after about one hour. If requests start failing after a long session, log out and log in again.
+> **Note:** The Supabase token is valid for about one hour. If something stops working after a long session, just log out and log in again.
 
 ---
 
@@ -175,36 +156,35 @@ FoodMates is a recipe-sharing blog for everyday home cooks. It gives them one pl
 
 ### Route Guards Logic
 
-- **How is routing split between guest-only and private routes?**
-  - `AuthGuard` protects `/recipes/create`, `/recipes/:recipeId/edit`, `/profile` and `/logout`. Guests are redirected to `/login` with a message such as "Please log in to share a recipe."
-  - `GuestGuard` protects `/login` and `/register`. Logged-in users are redirected to `/`.
-  - The Edit page also checks that the logged-in user is the author of the recipe.
+I use two small guard components:
+
+- **`AuthGuard`** protects the pages that need an account: Share a Recipe, Edit Recipe, My Profile and Logout. If a guest opens one of them, they're sent to Login with a short message like *"Please log in to share a recipe."*
+- **`GuestGuard`** protects Login and Register. If you're already logged in, you're sent to Home.
+
+On top of that, the Edit page checks that you're the author of the recipe.
 
 ### Main Routes
 
-- **Number and type of top-level pages:** 11 routes
+There are 11 routes in total:
 
-```text
-Public        /                          Home
-              /recipes                   Recipes Catalog
-              /recipes/:recipeId         Recipe Details
-              /about                     About
-
-Private       /recipes/create            Create Recipe
-              /recipes/:recipeId/edit    Edit Recipe
-              /profile                   Profile
-              /logout                    Logout
-
-Guest-only    /login                     Login
-              /register                  Register
-
-Fallback      *                          Not Found (404)
-```
+| Route | Page | Who can open it |
+|---|---|---|
+| `/` | Home | Everyone |
+| `/recipes` | Recipes (catalog) | Everyone |
+| `/recipes/:recipeId` | Recipe Details | Everyone |
+| `/about` | About | Everyone |
+| `/recipes/create` | Share a Recipe | Logged-in users |
+| `/recipes/:recipeId/edit` | Edit Recipe | The author |
+| `/profile` | My Profile | Logged-in users |
+| `/logout` | Logout | Logged-in users |
+| `/login` | Login | Guests |
+| `/register` | Register | Guests |
+| `*` | 404 page | Everyone |
 
 ### Nested & Parameterized Routes
 
-- **Is there nested routing?** Yes. `AuthGuard` and `GuestGuard` are layout routes, and the private and guest-only pages are nested inside them as child routes, rendered with `<Outlet />`.
-- **Which routes use URL parameters?** `/recipes/:recipeId` and `/recipes/:recipeId/edit`
+- **Nested routing:** yes. The two guards are layout routes, and the protected pages are their child routes. The guard shows the page with `<Outlet />` or redirects.
+- **Routes with URL parameters:** `/recipes/:recipeId` and `/recipes/:recipeId/edit`
 
 ---
 
@@ -212,13 +192,13 @@ Fallback      *                          Not Found (404)
 
 ### Catalog / List Page
 
-- **What data is displayed?** All recipes from Supabase, newest first. Each card shows the image, category, preparation time, title, short description and author.
-- **How does the user interact with the list?** A search box filters the recipes by name or category while the user types.
+- **What's shown:** all recipes, newest first. Each card has the photo, category, cooking time, title, a short description and the author's name.
+- **How you interact with it:** there's a search box. As you type, the list is filtered by recipe name or category.
 
 ### Details Page
 
-- **How is navigation triggered?** With `<Link>`: clicking the image or title of a recipe card opens `/recipes/:recipeId`. `useNavigate` is used after actions, for example to open the new recipe after creating it.
-- **What data is received via route parameters?** The `recipeId`, read with `useParams` and used to load the recipe, its comments and its saved status from Supabase.
+- **How you get there:** you click a recipe card, which is a `<Link>` to `/recipes/:recipeId`. After some actions the app moves you with `useNavigate`; for example, after posting a recipe it opens the new recipe.
+- **What comes from the URL:** the recipe id. The page reads it with `useParams` and uses it to load the recipe and its comments.
 
 ---
 
@@ -226,38 +206,40 @@ Fallback      *                          Not Found (404)
 
 ### Backend Type
 
-- **Real backend:** Supabase (Backend-as-a-Service), accessed through its REST API with `fetch`
-  - **Database (PostgreSQL):** tables `recipes`, `comments` and `saved_recipes`
-  - **Authentication:** email and password with Supabase Auth
-  - **Storage:** public bucket `images` for recipe photos
+I use **Supabase**, a hosted backend. The app talks to it through its REST API with `fetch`.
 
-Supabase is hosted, so no separate backend deployment is needed and the data persists between visits.
+- **Database:** three tables: `recipes`, `comments` and `saved_recipes`
+- **Login:** Supabase Auth with email and password
+- **Images:** stored in a Supabase Storage bucket called `images`
+- **Security:** Row Level Security is turned on for all three tables, so the database itself checks who is allowed to change what
+
+Because Supabase is already online, there's no separate server to deploy, and the data stays there between visits.
 
 ---
 
 ## 7. Data Operations (CRUD)
 
-The CRUD collection is `recipes`.
+The main collection is **recipes**. Only the author can edit or delete a recipe. The app hides the buttons from everyone else, and Supabase blocks the request anyway if someone tries.
 
 ### Create (POST)
 
-- **How does the user create new data?** A logged-in user opens Share a Recipe and fills in title, description, category, preparation time, servings, image (file upload or URL, with preview), ingredients and instructions. Uploaded images go to Supabase Storage. The recipe is saved with the author's `user_id` and name, and the user is redirected to the new recipe.
+- **How:** on **Share a Recipe** you fill in the title, description, category, cooking time, servings, ingredients, instructions and a photo. The photo can be uploaded or pasted as a link, and you see a preview before posting. After you publish, the app opens your new recipe.
 
 ### Read (GET)
 
-- **Where is data fetched and displayed?** In the Catalog (all recipes), on Recipe Details (one recipe with its comments) and on the Profile page (the user's own and saved recipes).
+- **Where:** the catalog shows all recipes, the details page shows one recipe with its comments, and My Profile shows your own and your saved recipes.
 
 ### Update (PUT/PATCH)
 
-- **How does the author edit an existing record?** The author clicks Edit on the details page. The form opens with the current data, and the author can change the text fields and keep the current image or choose a new one.
-- **How is the UI updated after the change?** A success message appears and the user is redirected to the details page, which loads the updated recipe.
+- **How:** the author clicks **Edit** on the recipe. The form opens already filled in, so you only change what you need. You can keep the old photo or choose a new one.
+- **What you see afterwards:** a "Recipe updated" message, and you're taken back to the recipe with the new details.
 
 ### Delete
 
-- **How does the author delete an existing record?** The author clicks Delete on the details page and confirms in a modal window.
-- **How is the UI updated after the change?** A success message appears and the user is redirected to the Catalog, which no longer shows the recipe.
+- **How:** the author clicks **Delete** and confirms in a pop-up window.
+- **What you see afterwards:** a "Recipe deleted" message, and you're taken to the catalog, where the recipe is gone.
 
-Comments (create, delete own) and saved recipes (save, unsave) are also stored in Supabase. New and deleted comments appear immediately without reloading the page.
+Besides recipes, logged-in users can **comment** (and delete their own comments) and **save** recipes to their profile. New comments show up right away, without reloading the page.
 
 ---
 
@@ -267,23 +249,23 @@ Comments (create, delete own) and saved recipes (save, unsave) are also stored i
 
 - Register
 - Login
-- Create Recipe
+- Share a Recipe
 - Edit Recipe
 - Add Comment
-- Catalog Search
+- Search
 
 ### Validation Rules
 
-- **Display name (Register):** required, between 2 and 30 characters
-- **Password (Register):** at least 6 characters, and Confirm Password must match
-- **Recipe title:** required, between 3 and 60 characters
-- **Preparation time:** whole number between 1 and 1440 minutes
-- **Recipe image** (multiple rules): an uploaded file must be an image and at most 5 MB; an image URL must start with `http://` or `https://`
-- **Comment:** cannot be empty, maximum 1000 characters
+- **Display name:** required, 2 to 30 characters
+- **Password:** at least 6 characters, and both password fields must match
+- **Recipe title:** required, 3 to 60 characters
+- **Cooking time:** a whole number from 1 to 1440 minutes
+- **Recipe photo** (several rules): an uploaded file must be an image and no bigger than 5 MB; a link must start with `http://` or `https://`
+- **Comment:** can't be empty, maximum 1000 characters
 
-Other validated fields: email format, description (at least 10 characters), category (must be selected), servings (1–50), ingredients and instructions (required).
+I also check the email format, that the description has at least 10 characters, that a category is chosen, that servings are between 1 and 50, and that ingredients and instructions aren't empty.
 
-Invalid data is never sent to the server. Errors are shown under the fields or as toast messages.
+If something is wrong, nothing is sent. The problem is shown under the field or in a pop-up message.
 
 ---
 
@@ -291,16 +273,16 @@ Invalid data is never sent to the server. Errors are shown under the fields or a
 
 ### Hooks & Component Lifecycle
 
-- **Which hooks are used, and where?**
-  - `useState`: form values, loading and error states in all pages
-  - `useEffect`: loading data in Catalog, Recipe Details, Profile and the comment list
-  - `useContext`: reading `AuthContext` and `CommentContext`
-  - `useReducer`: the comment list in `CommentProvider`
-  - `useParams`: Recipe Details and Edit Recipe
-  - `useNavigate`: redirects after login, create, edit and delete
-  - `useLocation`: `AuthGuard`, to choose the login message
-  - Custom hooks: `useAuth` (reads `AuthContext`) and `usePersistedState` (state saved in `localStorage`)
-- **Example of mount / update / unmount behavior:** Recipe Details loads the recipe when it **mounts**, loads it again when `recipeId` in the URL **updates**, and ignores a late response if the page **unmounts** before it arrives:
+- **Hooks I use:**
+  - `useState`: form values, loading and error states on every page
+  - `useEffect`: loading data for the catalog, the details page, the profile and the comments
+  - `useContext`: reading the login data and the comments
+  - `useReducer`: managing the list of comments
+  - `useParams`: reading the recipe id on the details and edit pages
+  - `useNavigate`: moving the user after login, posting, editing and deleting
+  - `useLocation`: choosing the right "please log in" message in the guard
+  - My own hooks: `useAuth` (gets the login data) and `usePersistedState` (state that's saved in the browser)
+- **Mount / update / unmount example:** the details page loads the recipe when it opens (mount), loads it again if the recipe id in the URL changes (update), and ignores the answer if you leave the page before it arrives (unmount):
 
 ```js
 useEffect(() => {
@@ -321,44 +303,37 @@ useEffect(() => {
 
 ### Context API
 
-- **What state/data is shared through Context, and which components consume it?**
-  - `AuthContext` shares the current user, access token, `isAuthenticated`, and the `register`, `login` and `logout` functions. It is used by the Header, `AuthGuard`, `GuestGuard`, Login, Register, Logout, Create, Edit, Recipe Details, Profile and the comment components.
-  - `CommentContext` shares the comments of the open recipe between the comment list and the comment form.
+- **`AuthContext`** shares who is logged in, plus the register, login and logout functions. It's used almost everywhere: the header, the guards, the forms, the details page, the profile and the comments.
+- **`CommentContext`** shares the comments of the open recipe, so when you post a comment the list updates straight away.
 
 ### Component Styling
 
-- **How are components styled?** With external CSS files in `public/styles` (`style.css`, `navigation.css`, `details.css`, `comments.css`, `modal.css`, `not-found.css`), linked in `index.html`. Colors and fonts are defined once as CSS variables.
+- I use regular CSS files in `public/styles` (`style.css`, `navigation.css`, `details.css`, `comments.css`, `modal.css`, `not-found.css`), linked in `index.html`. Colors and fonts are set once as CSS variables, so every page looks the same.
 
 ---
 
 ## 10. Typical User Flow
 
-1. The user opens FoodMates, browses the catalog and searches for a recipe.
-2. The user opens a recipe and reads the ingredients, instructions and comments.
-3. The user registers or logs in.
-4. The user shares a new recipe with a photo.
-5. The user comments on another recipe and saves it.
-6. The user opens My Profile to see their own and saved recipes, then logs out.
+1. A visitor opens FoodMates, looks through the recipes and searches for something to cook.
+2. They open a recipe and read the ingredients, steps and comments.
+3. They sign up and share a recipe of their own with a photo.
+4. They comment on someone else's recipe and save it.
+5. They open My Profile to see their recipes and saved ones, then log out.
 
 ---
 
 ## 11. Error & Edge Case Handling
 
-- **Authentication errors:** register and login data is validated before sending. Errors from Supabase, such as wrong email or password, are shown as toast messages. Guests are redirected away from private pages, and logged-in users away from Login and Register.
-- **Network or data errors:** all requests go through one request function that turns Supabase errors into readable messages. Pages show loading states while data is requested, and failed requests show an error message instead of crashing. Submit buttons are disabled while a request is running.
-- **Empty or missing data states:** messages are shown for an empty catalog, no search results, no comments, and no own or saved recipes on the Profile page. Unknown routes and invalid or missing recipes show the custom 404 page.
+- **Login and register errors:** the forms are checked before anything is sent. If Supabase says no (for example, wrong password), the message is shown in a pop-up. Guests can't open private pages, and logged-in users can't open Login or Register.
+- **Network or data errors:** while data is loading you see a loading message. If a request fails, you see a friendly error message instead of a broken page. The Publish, Save changes, Save recipe and Delete buttons are disabled while their request is running, so they can't be clicked twice.
+- **Empty or missing data:** there are messages for "no recipes yet", "no search results", "no comments yet" and an empty profile. A wrong URL or a recipe that doesn't exist shows a custom 404 page.
 
 ---
 
 # Deployment
 
-The frontend is deployed with Cloudflare Workers:
-
-https://foodmates.nshishkovaa.workers.dev/
-
-The backend is hosted by Supabase.
-
-No separate custom backend server deployment is required because the project uses Supabase as a hosted Backend-as-a-Service.
+- **Frontend:** Cloudflare Workers – https://foodmates.nshishkovaa.workers.dev/
+- **Backend:** Supabase (already hosted, nothing extra to deploy)
 
 ---
 
@@ -366,122 +341,49 @@ No separate custom backend server deployment is required because the project use
 
 ## Overview
 
-FoodMates is a Single Page Application built with React and Vite.
+FoodMates is a single-page React app. Everything it needs comes from Supabase:
 
 ```text
-Browser (React SPA)  ──fetch──▶  Supabase REST API
-                                  ├── Auth      (users, sessions)
-                                  ├── Database  (recipes, comments, saved_recipes)
-                                  └── Storage   (images bucket)
+React app  ──fetch──▶  Supabase
+                        ├── Auth      (accounts and login)
+                        ├── Database  (recipes, comments, saved_recipes)
+                        └── Storage   (recipe photos)
 ```
 
-- **Frontend:** React, React Router, deployed to Cloudflare Workers as static files
-- **Backend:** Supabase (PostgreSQL database, authentication and file storage)
-- **Communication:** REST requests with `fetch`
-
-## Folder Structure
+## Folders
 
 ```text
 src/
-├── api/
-│   ├── auth-api.js          Register, login, logout
-│   ├── recipe-api.js        Recipes CRUD
-│   ├── comment-api.js       Get, create and delete comments
-│   ├── saved-api.js         Save, unsave and list saved recipes
-│   └── index.js             Exports all API modules
-├── components/
-│   ├── about/               About page
-│   ├── catalog/             Recipe list with search
-│   ├── confirm-modal/       Reusable confirmation dialog
-│   ├── create-comment/      Comment form
-│   ├── footer/              Footer
-│   ├── guards/              AuthGuard and GuestGuard
-│   ├── header/              Navigation
-│   ├── home/                Home page
-│   ├── list-comment/        Comment list, comment item, comment reducer
-│   ├── login/               Login page
-│   ├── logout/              Logout route
-│   ├── not-found/           404 page
-│   ├── profile/             Own and saved recipes
-│   ├── recipe-card/         Recipe card used in lists
-│   ├── recipe-create/       Create recipe form
-│   ├── recipe-details/      Recipe details page
-│   ├── recipe-edit/         Edit recipe form
-│   └── register/            Register page
-├── contexts/
-│   ├── auth-context.jsx     AuthContext and AuthProvider
-│   └── comment-context.jsx  CommentContext and CommentProvider
-├── hooks/
-│   ├── useAuth.js           Reads AuthContext
-│   └── usePersistedState.js useState saved in localStorage
-├── utils/
-│   ├── request.js           Base request function for Supabase
-│   ├── recipe-form.js       Recipe validation and categories
-│   └── auth-form.js         Register validation
-├── App.jsx                  Route definitions
-└── main.jsx                 Entry point with BrowserRouter
+├── api/          Functions that talk to Supabase (auth, recipes, comments, saved recipes)
+├── components/   One folder per page or component (catalog, recipe-details, header, guards, ...)
+├── contexts/     AuthContext and CommentContext
+├── hooks/        useAuth and usePersistedState
+├── utils/        The shared request function and the form validation
+├── App.jsx       All the routes
+└── main.jsx      Starts the app
+
+public/
+├── styles/       CSS files
+└── icons/        Logo and icons
 ```
 
-## Layers
+## How the Parts Work Together
 
-### Components
-
-Each component lives in its own folder. Page components (Catalog, RecipeDetails, RecipeCreate, ...) hold the page state and call the API layer. Smaller components (RecipeCard, ItemComment, ConfirmModal, NotFound) receive their data through props.
-
-### API Layer
-
-Components never call `fetch` directly. They use the functions in `src/api`, for example `recipeApi.getAll()` or `commentApi.create(data)`.
-
-All API functions use the shared helpers in `src/utils/request.js`:
-
-- `request` - database requests (`/rest/v1`)
-- `authRequest` - authentication requests (`/auth/v1`)
-- `storageRequest` - image uploads to the `images` bucket
-- `getImageUrl` - public URL of an image in the bucket
-
-The base request function adds the Supabase API key and the user's access token to every request, and turns Supabase errors into readable error messages.
-
-### State Management
-
-| State | Where | Shared with |
-|---|---|---|
-| Logged-in user and token | `AuthContext` + `usePersistedState` (localStorage) | Whole app |
-| Comments of the open recipe | `CommentContext` + `useReducer` | Comment list and comment form |
-| Page data, form values, loading and error states | `useState` inside each page | That page only |
-
-### Validation
-
-Form validation is kept in `src/utils` so it can be reused:
-
-- `validateRecipe` is used by both Create and Edit
-- `validateRegister` is used by Register
-
-Invalid data is stopped before any request is sent.
+- **Components** show the pages. Page components load their own data; small components like the recipe card get their data through props.
+- **The `api` folder** is the only place that talks to Supabase. Components call simple functions like `recipeApi.getAll()` instead of writing `fetch` themselves.
+- **One shared request function** (`utils/request.js`) adds the API key and the login token to every request and turns Supabase errors into readable messages.
+- **State:** the login lives in `AuthContext` (and in `localStorage`), the comments of the open recipe live in `CommentContext`, and everything else (form values, loading, errors) stays inside the page that uses it.
+- **Validation** lives in `utils`, so the Share and Edit forms use exactly the same rules.
 
 ## Data Model
 
 ```text
-recipes
-├── id            uuid
-├── title         text
-├── description   text
-├── category      text
-├── prepTime      number
-├── servings      number
-├── imageUrl      text
-├── ingredients   text (one per line)
-├── instructions  text (one step per line)
-├── author        text (display name)
-├── user_id       uuid  → author of the recipe
-└── created_at    timestamp
+recipes        id, title, description, category, prepTime, servings,
+               imageUrl, ingredients, instructions, author, user_id, created_at
 
-comments
-├── id, text, author, created_at
-├── recipe_id     uuid  → recipes.id
-└── user_id       uuid  → author of the comment
+comments       id, text, author, recipe_id, user_id, created_at
 
-saved_recipes
-├── id, created_at
-├── recipe_id     uuid  → recipes.id
-└── user_id       uuid  → user who saved it
+saved_recipes  id, recipe_id, user_id, created_at
 ```
+
+`user_id` links each row to the person who created it, and `recipe_id` links comments and saved recipes to their recipe.
