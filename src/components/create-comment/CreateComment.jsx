@@ -9,7 +9,7 @@ export default function CreateComment({ user, recipeId }) {
 
         const newComment = {
             text: formData.get('text'),
-            author: user?.email,
+            author: user?.user_metadata?.name || user?.email,
             recipe_id: recipeId,
             user_id: user?.id
         }
