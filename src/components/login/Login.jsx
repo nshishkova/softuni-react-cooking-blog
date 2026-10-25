@@ -61,7 +61,7 @@ export default function Login() {
             Log in
           </button>
           <p className="form-switch">
-            New to RecipeHub? <Link to="/register">Create an account</Link>
+            New to FoodMates? <Link to="/register">Create an account</Link>
           </p>
 
         </form>

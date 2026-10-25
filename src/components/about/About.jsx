@@ -24,7 +24,7 @@ import { Link } from "react-router";
               when <em>everyone's invited.</em>
             </h2>
             <p>
-              RecipeHub is a place for everyday cooks to share the dishes they
+              FoodMates is a place for everyday cooks to share the dishes they
               love. No fancy techniques needed — just good food, honest tips,
               and a community that inspires you to try something new.
             </p>

@@ -6,10 +6,10 @@ export default function Footer() {
       <div className="container footer-main">
         <Link className="brand footer-brand" to="/">
           <span className="brand-mark" aria-hidden="true">
-            r.
+            f.
           </span>
           <span>
-            recipe<span className="brand-accent">hub</span>
+            food<span className="brand-accent">mates</span>
           </span>
         </Link>
         <p>Good food. Shared often.</p>
@@ -21,7 +21,7 @@ export default function Footer() {
       </div>
       <div className="container footer-bottom">
         <span>
-          © <span id="year"></span> RecipeHub. Made with care.
+          © {new Date().getFullYear()} FoodMates. Made with care.
         </span>
         <span>
           Designed for curious home cooks <span aria-hidden="true">♡</span>

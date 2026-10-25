@@ -8,12 +8,12 @@ export default function Header() {
 
 <header className="site-header">
       <div className="container header-inner">
-        <Link to="/" className="brand" aria-label="RecipeHub home">
+        <Link to="/" className="brand" aria-label="FoodMates home">
           <span className="brand-mark" aria-hidden="true">
-            r.
+            f.
           </span>
           <span>
-            recipe<span className="brand-accent">hub</span>
+            food<span className="brand-accent">mates</span>
           </span>
         </Link>
 
@@ -40,9 +40,6 @@ export default function Header() {
           <NavLink to="/recipes" className="nav-link">
             Recipes
           </NavLink>
-          {/* <Link to="/categories" className="nav-link">
-            Categories
-          </Link> */}
           <NavLink to="/about" className="nav-link">
             About
           </NavLink>
