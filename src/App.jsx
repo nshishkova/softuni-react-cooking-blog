@@ -14,6 +14,7 @@ import Home from "./components/home/Home";
 import Catalog from "./components/catalog/Catalog";
 import RecipeDetails from "./components/recipe-details/RecipeDetails";
 import Profile from "./components/profile/Profile";
+import NotFound from "./components/not-found/NotFound";
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/about" element={<About />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <Footer />

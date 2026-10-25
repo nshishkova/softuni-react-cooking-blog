@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from "react-router";
 import { useEffect, useState, useContext } from "react";
 import CreateComment from "../create-comment/CreateComment.jsx";
 import ConfirmModal from "../confirm-modal/ConfirmModal.jsx";
-import request from "../../utils/request";
+import NotFound from "../not-found/NotFound";
 import { recipeApi, savedApi } from "../../api";
 import { toast } from "react-toastify";
 import AuthContext from "../../contexts/auth-context";
@@ -26,7 +26,9 @@ const toList = (value) => {
 export default function RecipeDetails() {
   const { user, isAuthenticated } = useContext(AuthContext);
   const { recipeId } = useParams();
-  const [recipe, setRecipe] = useState({});
+  const [recipe, setRecipe] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [isSaved, setIsSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -39,11 +41,29 @@ export default function RecipeDetails() {
 
 
   useEffect(() => {
-    request(`/recipes?id=eq.${recipeId}`)
+    // Ignore the response if the user has left the page before it arrives
+    let isActive = true;
+
+    recipeApi.getOne(recipeId)
       .then((result) => {
-        setRecipe(result[0]);
+        if (isActive) {
+          setRecipe(result);
+        }
       })
-      .catch((error) => alert(error));
+      .catch((err) => {
+        if (isActive) {
+          setError(err.message);
+        }
+      })
+      .finally(() => {
+        if (isActive) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      isActive = false;
+    };
   }, [recipeId]);
 
   // Check if the logged-in user has already saved this recipe
@@ -96,6 +116,36 @@ export default function RecipeDetails() {
       setShowDeleteModal(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <main className="container recipe-detail" id="main">
+        <p className="empty-state">Loading recipe...</p>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="container recipe-detail" id="main">
+        <p className="empty-state">
+          Something went wrong while loading the recipe. Please try again later.
+        </p>
+        <Link className="back-link" to="/recipes">
+          ← Back to all recipes
+        </Link>
+      </main>
+    );
+  }
+
+  if (!recipe) {
+    return (
+      <NotFound
+        title="Recipe not found"
+        message="This recipe doesn't exist or may have been deleted by its author."
+      />
+    );
+  }
 
   return (
     <CommentProvider>
