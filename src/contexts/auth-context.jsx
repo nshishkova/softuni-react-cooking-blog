@@ -1,5 +1,6 @@
 import { createContext } from 'react';
 import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 import { authApi } from '../api';
 import usePersistedState from '../hooks/usePersistedState';
 
@@ -26,7 +27,7 @@ export function AuthProvider({ children }) {
 
             navigate("/");
         } catch (error) {
-            alert(error.message);
+            toast.error(error.message);
         }
     };
 
@@ -38,18 +39,18 @@ export function AuthProvider({ children }) {
 
             navigate("/");
         } catch (error) {
-            alert(error.message);
+            toast.error(error.message);
         }
     };
 
     const logoutAction = async () => {
         try {
-            await authApi.logout(auth?.access_token);
-
-            setAuth(null);
+            await authApi.logout();
         } catch (error) {
-            alert(error.message);
+            toast.error(error.message);
         }
+
+        // Clear the local session even if the server request failed
         setAuth(null);
     };
 

@@ -1,5 +1,7 @@
 import { Link } from "react-router";
+import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
+import { validateRegister } from "../../utils/auth-form";
 
 export default function Register() {
   const { register } = useAuth();
@@ -10,13 +12,12 @@ export default function Register() {
     const password = formData.get("password");
     const confirmPassword = formData.get("confirm-password");
 
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
+    // Show the first problem found, so invalid data never reaches Supabase
+    const errors = validateRegister({ name, email, password, confirmPassword });
+    const firstError = Object.values(errors)[0];
 
-    if (!name || !email || !password || !confirmPassword) {
-      alert("All fields are required");
+    if (firstError) {
+      toast.error(firstError);
       return;
     }
 
@@ -68,7 +69,7 @@ export default function Register() {
             id="password"
             type="password"
             name="password"
-            placeholder="At least 8 characters"
+            placeholder="At least 6 characters"
             required
           />
           <label htmlFor="confirm-password">Confirm password</label>
