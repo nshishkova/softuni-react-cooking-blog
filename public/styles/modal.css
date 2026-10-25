@@ -1,0 +1,49 @@
+/* Confirmation modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(24, 59, 43, 0.45);
+  backdrop-filter: blur(3px);
+}
+.modal {
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+.modal-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 0.75rem;
+  border-radius: 50%;
+  background: #fdecea;
+  font-size: 1.4rem;
+}
+.modal h2 {
+  margin: 0 0 0.5rem;
+}
+.modal p {
+  margin: 0 0 1.5rem;
+  color: var(--muted);
+}
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+.modal-confirm {
+  color: #fff;
+  background: #b42318;
+}
+.modal-confirm:hover {
+  background: #8f1c13;
+}

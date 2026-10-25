@@ -286,12 +286,12 @@ h2 em {
   cursor: pointer;
 }
 
-.hero-actions button:last-child {
+.hero-actions .button-danger {
   color: #b42318;
   border-color: #b42318;
 }
 
-.hero-actions button:last-child:hover {
+.hero-actions .button-danger:hover {
   background-color: #b42318;
   color: white;
 }
@@ -1366,6 +1366,7 @@ input:focus-visible {
 .form-submit {
   width: 100%;
   justify-content: center;
+  margin-top: 1.5rem;
 }
 .form-switch {
   text-align: center;
@@ -1382,7 +1383,8 @@ input:focus-visible {
   margin: 0 auto 34px;
 }
 .back-link {
-  display: inline-block;
+  display: block;
+  width: fit-content;
   margin-bottom: 28px;
   color: var(--green);
   font-weight: 700;

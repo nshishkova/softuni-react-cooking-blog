@@ -1,6 +1,28 @@
 /* Comments and community feedback */
 .comments-section { margin-top: 3rem; max-width: 760px; }
+.comment-card { position: relative; padding-right: 2.5rem; }
 .comment-card p { margin: 0.35rem 0 0.75rem; }
+.comment-login { margin-top: 1.5rem; }
+.comment-delete {
+  position: absolute;
+  top: 1rem;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #8a8f85;
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.comment-delete:hover,
+.comment-delete:focus-visible {
+  background: #fbe9e7;
+  color: #c0392b;
+}
 .comment-form {
   display: grid;
   gap: 0.6rem;
