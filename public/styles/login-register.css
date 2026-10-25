@@ -1,6 +1,0 @@
-/* Login and registration pages */
-.auth-page { max-width: 560px; margin: 3rem auto 5rem; padding: 0 1.25rem; }
-.auth-card { background: #fff; border: 1px solid #e7e9e1; border-radius: 1.25rem; padding: clamp(1.5rem, 4vw, 2.5rem); box-shadow: 0 16px 48px rgba(35,55,37,.06); }
-.auth-card label { display: block; margin: 1rem 0 .4rem; font-weight: 600; }
-.auth-card input { width: 100%; box-sizing: border-box; }
-.auth-card .button { margin-top: 1.25rem; }
