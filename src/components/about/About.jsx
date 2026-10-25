@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
      export default function About() {
        return (
      <section className="community-section" id="about">
@@ -26,9 +28,9 @@
               love. No fancy techniques needed — just good food, honest tips,
               and a community that inspires you to try something new.
             </p>
-            <a className="button button-primary" href="/register">
+            <Link className="button button-primary" to="/register">
               Join our kitchen <span aria-hidden="true">→</span>
-            </a>
+            </Link>
             <div className="community-stat">
               <strong>One recipe at a time.</strong>
               <span>Let's make something lovely.</span>

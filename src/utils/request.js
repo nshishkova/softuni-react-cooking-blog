@@ -1,28 +1,8 @@
-
-const restUrl = "https://wdbphrvyoroyjmpwkelo.supabase.co/rest/v1";
-const authUrl = "https://wdbphrvyoroyjmpwkelo.supabase.co/auth/v1";
-const storageUrl = "https://wdbphrvyoroyjmpwkelo.supabase.co/storage/v1/object/images";
-
-// export async function uploadFile(fileName, file) {
-//     const options = {
-//         headers: {
-//             apiKey: import.meta.env.VITE_API_KEY,
-//             'Content-Type': file.type || 'application/octet-stream'
-//         }
-//     };
-//     const response = await fetch(`${storageUrl}/${fileName}`, {
-//         method: "POST",
-//         body: file,
-//         ...options,
-//     });
-
-//     if (!response.ok) {
-//         throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-
-//     return `https://wdbphrvyoroyjmpwkelo.supabase.co/storage/v1/object/images/${fileName}`;
-
-// }
+const baseUrl = "https://wdbphrvyoroyjmpwkelo.supabase.co";
+const restUrl = `${baseUrl}/rest/v1`;
+const authUrl = `${baseUrl}/auth/v1`;
+const storageUrl = `${baseUrl}/storage/v1/object/images`;
+const publicStorageUrl = `${baseUrl}/storage/v1/object/public/images`;
 
 async function baseRequest(url, path = "/", method = "GET", data = null, opts = {}) {
     const options = {
@@ -47,7 +27,7 @@ async function baseRequest(url, path = "/", method = "GET", data = null, opts = 
     const response = await fetch(`${url}${path}`, options);
 
     if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(await getErrorMessage(response));
     }
 
     if (response.status === 204) {
@@ -65,13 +45,27 @@ export const authRequest = async (path = "/", method = "GET", data = null, opts 
     return baseRequest(authUrl, path, method, data, opts);
 };
 
+// Uploads a file to the "images" bucket and returns its public URL.
 export const storageRequest = async (fileName, file) => {
-    return baseRequest(storageUrl, `/${fileName}`, "POST", file, {
+    await baseRequest(storageUrl, `/${fileName}`, "POST", file, {
         headers: {
             'Content-Type': file.type || "application/octet-stream",
         }
     });
+
+    return `${publicStorageUrl}/${fileName}`;
 };
+
+// Supabase returns errors as JSON with different field names depending on the service.
+async function getErrorMessage(response) {
+    try {
+        const body = await response.json();
+
+        return body.msg || body.message || body.error_description || body.error || `HTTP error! status: ${response.status}`;
+    } catch {
+        return `HTTP error! status: ${response.status}`;
+    }
+}
 
 function getAuthHeader() {
     const auth = localStorage.getItem("auth");

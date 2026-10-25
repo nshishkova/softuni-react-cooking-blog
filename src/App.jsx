@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router";
 import { AuthProvider } from "./contexts/auth-context";
 import { ToastContainer } from "react-toastify";
 
+import About from "./components/about/About";
 import Logout from "./components/logout/Logout";
 import Login from "./components/login/Login";
 import RecipeEdit from "./components/recipe-edit/RecipeEdit";
@@ -12,6 +13,7 @@ import Header from "./components/header/Header";
 import Home from "./components/home/Home";
 import Catalog from "./components/catalog/Catalog";
 import RecipeDetails from "./components/recipe-details/RecipeDetails";
+import Profile from "./components/profile/Profile";
 
 function App() {
 
@@ -33,6 +35,8 @@ function App() {
           path="/register"
           element={<Register />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
 
       <Footer />
