@@ -7,6 +7,14 @@ export default function Catalog() {
     const [recipes, setRecipes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [search, setSearch] = useState("");
+
+    // Filter the loaded recipes by name or category
+    const searchText = search.trim().toLowerCase();
+    const filteredRecipes = recipes.filter(recipe =>
+        [recipe.title, recipe.category]
+            .some(field => field?.toLowerCase().includes(searchText))
+    );
 
     useEffect(() => {
        const toastId = toast.loading("Loading recipes...");
@@ -43,8 +51,10 @@ export default function Catalog() {
             ><span aria-hidden="true">⌕</span
             ><input
               type="search"
-              placeholder="Search recipes..."
-              aria-label="Search recipes"
+              placeholder="Search by recipe name or category..."
+              aria-label="Search by recipe name or category"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
           /></label>
           {/* <div className="filter-pills">
             <a className="filter-pill active" href="catalog.html">All recipes</a
@@ -54,12 +64,14 @@ export default function Catalog() {
           </div> */}
         </div>
         {!isLoading && !error && (
-          recipes.length > 0 ? (
-            <div className="recipe-grid">
-              {recipes.map(recipe => <RecipeCard key={recipe.id} {...recipe} />)}
-            </div>
-          ) : (
+          recipes.length === 0 ? (
             <p className="empty-state">No recipes yet. Be the first to share one!</p>
+          ) : filteredRecipes.length === 0 ? (
+            <p className="empty-state">No recipes match "{search.trim()}". Try another word.</p>
+          ) : (
+            <div className="recipe-grid">
+              {filteredRecipes.map(recipe => <RecipeCard key={recipe.id} {...recipe} />)}
+            </div>
           )
         )}
         <div className="centered-action">
