@@ -1,15 +1,34 @@
 import { useEffect, useState } from "react";
 import RecipeCard from "../recipe-card/RecipeCard";
-import { Link } from "react-router";
+import { toast } from "react-toastify";
 import {recipeApi} from "../../api";
 
 export default function Catalog() {
     const [recipes, setRecipes] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
+       const toastId = toast.loading("Loading recipes...");
+
        recipeApi.getAll()
-       .then(setRecipes)
-       .catch(err => alert(err));
+       .then((result) => {
+           setRecipes(result);
+           toast.dismiss(toastId);
+       })
+       .catch((err) => {
+           setError(err.message);
+           toast.update(toastId, {
+               render: `Could not load recipes: ${err.message}`,
+               type: "error",
+               isLoading: false,
+               autoClose: 5000,
+           });
+       })
+       .finally(() => setIsLoading(false));
+
+       // Remove the loading toast if the user leaves the page before the recipes arrive
+       return () => toast.dismiss(toastId);
     }, []);
 
   return (
@@ -27,23 +46,26 @@ export default function Catalog() {
               placeholder="Search recipes..."
               aria-label="Search recipes"
           /></label>
-          <div className="filter-pills">
+          {/* <div className="filter-pills">
             <a className="filter-pill active" href="catalog.html">All recipes</a
             ><a className="filter-pill" href="catalog.html#quick">Quick & easy</a
             ><a className="filter-pill" href="catalog.html#vegetarian">Vegetarian</a
             ><a className="filter-pill" href="catalog.html#desserts">Desserts</a>
-          </div>
+          </div> */}
         </div>
-        <div className="recipe-grid">
-        {recipes.length > 0
-          ? recipes.map(recipe => <RecipeCard key={recipe.id} {...recipe} />)
-          : <h3>No recipes found.</h3>
-        }
-        </div>
+        {!isLoading && !error && (
+          recipes.length > 0 ? (
+            <div className="recipe-grid">
+              {recipes.map(recipe => <RecipeCard key={recipe.id} {...recipe} />)}
+            </div>
+          ) : (
+            <p className="empty-state">No recipes yet. Be the first to share one!</p>
+          )
+        )}
         <div className="centered-action">
-          <Link className="button button-primary" to="/recipes/create"
+          {/* <Link className="button button-primary" to="/recipes/create"
             >Share your recipe ↗</Link
-          >
+          > */}
         </div>
       </section>
   );
