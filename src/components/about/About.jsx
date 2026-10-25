@@ -1,6 +1,9 @@
 import { Link } from "react-router";
+import { useAuth } from "../../hooks/useAuth";
 
      export default function About() {
+       const { isAuthenticated } = useAuth();
+
        return (
      <section className="community-section" id="about">
         <div className="container community-inner">
@@ -28,9 +31,11 @@ import { Link } from "react-router";
               love. No fancy techniques needed — just good food, honest tips,
               and a community that inspires you to try something new.
             </p>
-            <Link className="button button-primary" to="/register">
-              Join our kitchen <span aria-hidden="true">→</span>
-            </Link>
+            {!isAuthenticated && (
+              <Link className="button button-primary" to="/register">
+                Join our kitchen <span aria-hidden="true">→</span>
+              </Link>
+            )}
             <div className="community-stat">
               <strong>One recipe at a time.</strong>
               <span>Let's make something lovely.</span>
