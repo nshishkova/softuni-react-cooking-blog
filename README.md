@@ -387,3 +387,9 @@ saved_recipes  id, recipe_id, user_id, created_at
 ```
 
 `user_id` links each row to the person who created it, and `recipe_id` links comments and saved recipes to their recipe.
+
+---
+
+# Credits
+
+The design of the app (layout, colors and styles) was created with the help of Claude and ChatGPT.
