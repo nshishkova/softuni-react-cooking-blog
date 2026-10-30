@@ -32,6 +32,13 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
+/* The app fills at least the whole screen, so short pages keep the footer at the bottom */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
 img {
   display: block;
   width: 100%;
@@ -796,6 +803,7 @@ h2 em {
   font-size: 12px;
 }
 .site-footer {
+  margin-top: auto;
   border-top: 1px solid var(--line);
   background: #f6f5f0;
 }
