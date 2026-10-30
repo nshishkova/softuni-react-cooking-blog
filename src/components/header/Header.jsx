@@ -49,6 +49,22 @@ export default function Header() {
           <NavLink to="/about" className="nav-link" onClick={closeMenu}>
             About
           </NavLink>
+
+          {/* On smaller screens the outline buttons are hidden, so the account links are shown in the menu */}
+          {isAuthenticated ? (
+            <>
+              <NavLink to="/profile" className="nav-link nav-account" onClick={closeMenu}>
+                My Profile
+              </NavLink>
+              <Link to="/logout" className="nav-link nav-account" onClick={closeMenu}>
+                Log out
+              </Link>
+            </>
+          ) : (
+            <NavLink to="/login" className="nav-link nav-account" onClick={closeMenu}>
+              Log in
+            </NavLink>
+          )}
         </nav>
 
         <div className="header-actions">

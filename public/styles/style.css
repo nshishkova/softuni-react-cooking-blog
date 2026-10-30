@@ -135,6 +135,10 @@ input:focus-visible {
   font-weight: 600;
   transition: color 0.2s;
 }
+/* Account links in the menu are only needed when the header buttons are hidden */
+.nav-account {
+  display: none;
+}
 .nav-link:hover,
 .nav-link.active {
   color: var(--ink);
@@ -845,6 +849,9 @@ h2 em {
   }
   .header-actions .button-outline {
     display: none;
+  }
+  .nav-account {
+    display: block;
   }
   .hero {
     gap: 38px;
