@@ -1,8 +1,13 @@
+import { useState } from "react";
 import { Link, NavLink } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 
 export default function Header() {
   const { isAuthenticated } = useAuth();
+  // On small screens the navigation is hidden until the menu button is clicked
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const closeMenu = () => setIsMenuOpen(false);
 
   return (
 
@@ -20,8 +25,9 @@ export default function Header() {
         <button
           className="menu-toggle"
           type="button"
-          aria-expanded="false"
+          aria-expanded={isMenuOpen}
           aria-controls="primary-nav"
+          onClick={() => setIsMenuOpen(state => !state)}
         >
           <span className="sr-only">Toggle navigation</span>
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -30,17 +36,17 @@ export default function Header() {
         </button>
 
         <nav
-          className="primary-nav"
+          className={isMenuOpen ? "primary-nav is-open" : "primary-nav"}
           id="primary-nav"
           aria-label="Main navigation"
         >
-          <NavLink to="/" end className="nav-link">
+          <NavLink to="/" end className="nav-link" onClick={closeMenu}>
             Home
           </NavLink>
-          <NavLink to="/recipes" className="nav-link">
+          <NavLink to="/recipes" className="nav-link" onClick={closeMenu}>
             Recipes
           </NavLink>
-          <NavLink to="/about" className="nav-link">
+          <NavLink to="/about" className="nav-link" onClick={closeMenu}>
             About
           </NavLink>
         </nav>
